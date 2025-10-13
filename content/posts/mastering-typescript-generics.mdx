@@ -1,0 +1,422 @@
+---
+title: "Mastering TypeScript Generics"
+date: "2024-02-28"
+excerpt: "A deep dive into TypeScript generics and how they can make your code more reusable and type-safe."
+readTime: "10 min"
+visible: false
+---
+
+# Mastering TypeScript Generics
+
+TypeScript generics are one of the most powerful features of the language, enabling you to write flexible, reusable, and type-safe code. In this comprehensive guide, we'll explore generics from basic concepts to advanced patterns used in production applications.
+
+## What Are Generics?
+
+Generics allow you to write functions, classes, and interfaces that work with multiple types while maintaining type safety. Think of them as "type variables" that get filled in when you use the code.
+
+```typescript
+// Without generics - limited and repetitive
+function identity(arg: number): number {
+  return arg;
+}
+
+function identityString(arg: string): string {
+  return arg;
+}
+
+// With generics - flexible and reusable
+function identity<T>(arg: T): T {
+  return arg;
+}
+
+// Usage
+const numberResult = identity<number>(42);        // T is number
+const stringResult = identity<string>("hello");   // T is string
+const boolResult = identity(true);                // T is inferred as boolean
+```
+
+## Basic Generic Functions
+
+### Simple Generic Function
+
+```typescript
+function getFirst<T>(items: T[]): T | undefined {
+  return items[0];
+}
+
+const firstNumber = getFirst([1, 2, 3]);           // T inferred as number
+const firstString = getFirst(["a", "b", "c"]);     // T inferred as string
+```
+
+### Generic Constraints
+
+Sometimes you need to limit what types can be used with your generic:
+
+```typescript
+interface Lengthwise {
+  length: number;
+}
+
+function logLength<T extends Lengthwise>(arg: T): T {
+  console.log(arg.length);  // Now we know arg has a length property
+  return arg;
+}
+
+logLength("hello");        // OK - string has length
+logLength([1, 2, 3]);      // OK - array has length
+logLength(42);             // Error - number doesn't have length
+```
+
+### Multiple Type Parameters
+
+```typescript
+function combine<T, U>(first: T, second: U): [T, U] {
+  return [first, second];
+}
+
+const result = combine("hello", 42);  // [string, number]
+```
+
+## Generic Interfaces
+
+### Basic Generic Interface
+
+```typescript
+interface Container<T> {
+  value: T;
+  getValue(): T;
+  setValue(value: T): void;
+}
+
+class NumberContainer implements Container<number> {
+  value: number = 0;
+  
+  getValue(): number {
+    return this.value;
+  }
+  
+  setValue(value: number): void {
+    this.value = value;
+  }
+}
+```
+
+### Generic Interface with Constraints
+
+```typescript
+interface Repository<T extends { id: string }> {
+  findById(id: string): Promise<T | null>;
+  save(entity: T): Promise<T>;
+  delete(id: string): Promise<void>;
+}
+
+interface User {
+  id: string;
+  name: string;
+  email: string;
+}
+
+class UserRepository implements Repository<User> {
+  async findById(id: string): Promise<User | null> {
+    // Implementation
+    return null;
+  }
+  
+  async save(user: User): Promise<User> {
+    // Implementation
+    return user;
+  }
+  
+  async delete(id: string): Promise<void> {
+    // Implementation
+  }
+}
+```
+
+## Generic Classes
+
+```typescript
+class Stack<T> {
+  private items: T[] = [];
+  
+  push(item: T): void {
+    this.items.push(item);
+  }
+  
+  pop(): T | undefined {
+    return this.items.pop();
+  }
+  
+  peek(): T | undefined {
+    return this.items[this.items.length - 1];
+  }
+  
+  isEmpty(): boolean {
+    return this.items.length === 0;
+  }
+}
+
+// Usage
+const numberStack = new Stack<number>();
+numberStack.push(1);
+numberStack.push(2);
+const top = numberStack.pop(); // top is number | undefined
+
+const stringStack = new Stack<string>();
+stringStack.push("hello");
+stringStack.push("world");
+```
+
+## Advanced Generic Patterns
+
+### Conditional Types
+
+```typescript
+type ApiResponse<T> = T extends string 
+  ? { message: T }
+  : { data: T };
+
+type StringResponse = ApiResponse<string>;    // { message: string }
+type DataResponse = ApiResponse<User>;        // { data: User }
+
+// More complex conditional type
+type NonNullable<T> = T extends null | undefined ? never : T;
+
+type Example1 = NonNullable<string | null>;    // string
+type Example2 = NonNullable<number | undefined>; // number
+```
+
+### Mapped Types
+
+```typescript
+// Make all properties optional
+type Partial<T> = {
+  [P in keyof T]?: T[P];
+};
+
+// Make all properties readonly
+type Readonly<T> = {
+  readonly [P in keyof T]: T[P];
+};
+
+// Make all properties required
+type Required<T> = {
+  [P in keyof T]-?: T[P];
+};
+
+// Pick specific properties
+type Pick<T, K extends keyof T> = {
+  [P in K]: T[P];
+};
+
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+}
+
+type PublicUser = Pick<User, 'id' | 'name' | 'email'>;
+// { id: string; name: string; email: string; }
+```
+
+### Utility Types in Action
+
+```typescript
+// Creating API endpoints with proper typing
+interface CreateUserRequest {
+  name: string;
+  email: string;
+  password: string;
+}
+
+interface UpdateUserRequest {
+  id: string;
+  name?: string;
+  email?: string;
+}
+
+// Function overloads with generics
+function updateUser<T extends UpdateUserRequest>(userData: T): Promise<User>;
+function updateUser<T extends CreateUserRequest>(userData: T): Promise<User>;
+function updateUser<T extends CreateUserRequest | UpdateUserRequest>(
+  userData: T
+): Promise<User> {
+  // Implementation
+  return Promise.resolve({} as User);
+}
+```
+
+## Real-World Examples
+
+### API Response Handler
+
+```typescript
+interface ApiResponse<T> {
+  success: boolean;
+  data?: T;
+  error?: string;
+  timestamp: string;
+}
+
+async function fetchData<T>(url: string): Promise<ApiResponse<T>> {
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    
+    return {
+      success: true,
+      data,
+      timestamp: new Date().toISOString()
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+      timestamp: new Date().toISOString()
+    };
+  }
+}
+
+// Usage with proper typing
+interface User {
+  id: string;
+  name: string;
+}
+
+const userResponse = await fetchData<User>('/api/users/1');
+if (userResponse.success && userResponse.data) {
+  console.log(userResponse.data.name); // TypeScript knows this is a User
+}
+```
+
+### Event System
+
+```typescript
+type EventMap = {
+  'user:created': { userId: string; name: string };
+  'user:updated': { userId: string; changes: Partial<User> };
+  'user:deleted': { userId: string };
+};
+
+class EventEmitter<T extends Record<string, any>> {
+  private listeners: { [K in keyof T]?: Array<(data: T[K]) => void> } = {};
+  
+  on<K extends keyof T>(event: K, listener: (data: T[K]) => void): void {
+    if (!this.listeners[event]) {
+      this.listeners[event] = [];
+    }
+    this.listeners[event]!.push(listener);
+  }
+  
+  emit<K extends keyof T>(event: K, data: T[K]): void {
+    const eventListeners = this.listeners[event];
+    if (eventListeners) {
+      eventListeners.forEach(listener => listener(data));
+    }
+  }
+}
+
+// Usage
+const eventEmitter = new EventEmitter<EventMap>();
+
+eventEmitter.on('user:created', (data) => {
+  console.log(`User created: ${data.name} (${data.userId})`);
+  // TypeScript knows data has userId and name properties
+});
+
+eventEmitter.emit('user:created', {
+  userId: '123',
+  name: 'John Doe'
+});
+```
+
+## Best Practices
+
+### 1. Use Descriptive Generic Names
+
+```typescript
+// Good
+function processData<TData, TResponse>(
+  data: TData,
+  transformer: (input: TData) => TResponse
+): TResponse {
+  return transformer(data);
+}
+
+// Avoid
+function processData<T, U>(data: T, transformer: (input: T) => U): U {
+  return transformer(data);
+}
+```
+
+### 2. Provide Default Types
+
+```typescript
+interface ApiClient<TData = any> {
+  get(url: string): Promise<TData>;
+  post(url: string, data: TData): Promise<TData>;
+}
+
+// Can be used without specifying type
+const client = new ApiClient(); // TData defaults to any
+
+// Or with specific type
+const userClient = new ApiClient<User>();
+```
+
+### 3. Use Constraints Judiciously
+
+```typescript
+// Good - meaningful constraint
+function logProperty<T, K extends keyof T>(obj: T, key: K): void {
+  console.log(obj[key]);
+}
+
+// Avoid - overly restrictive
+function process<T extends string | number>(value: T): T {
+  return value;
+}
+```
+
+## Common Pitfalls
+
+### 1. Generic Type Inference Issues
+
+```typescript
+// Problem: Type inference might not work as expected
+function createArray<T>(length: number, value: T): T[] {
+  return Array(length).fill(value);
+}
+
+const strings = createArray(3, "hello"); // Good: T inferred as string
+const numbers = createArray(3, 42);      // Good: T inferred as number
+const mixed = createArray(3, null);      // Problem: T inferred as null
+```
+
+### 2. Overusing Generics
+
+```typescript
+// Unnecessary generic
+function add<T extends number>(a: T, b: T): T {
+  return a + b;
+}
+
+// Better - simple function
+function add(a: number, b: number): number {
+  return a + b;
+}
+```
+
+## Conclusion
+
+TypeScript generics are a powerful tool for writing flexible, reusable, and type-safe code. They allow you to create components that work with multiple types while maintaining the benefits of static typing. 
+
+Key takeaways:
+- Start with simple generic functions and gradually move to more complex patterns
+- Use constraints to limit generic types when needed
+- Leverage utility types for common transformations
+- Don't overuse generics - sometimes simple types are better
+- Always consider type inference when designing generic APIs
+
+With practice, generics will become an essential part of your TypeScript toolkit, helping you write more maintainable and robust applications.

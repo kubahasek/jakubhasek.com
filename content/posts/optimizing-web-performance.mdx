@@ -1,0 +1,410 @@
+---
+title: "Optimizing Web Performance"
+date: "2024-02-20"
+excerpt: "Practical tips and techniques for improving your website loading speed and overall performance metrics."
+readTime: "7 min"
+visible: false
+---
+
+# Optimizing Web Performance
+
+Web performance is crucial for user experience, SEO rankings, and business success. In this guide, we'll explore practical techniques and tools to optimize your website's loading speed and overall performance metrics.
+
+## Understanding Performance Metrics
+
+### Core Web Vitals
+
+Google's Core Web Vitals are key metrics that measure user experience:
+
+- **Largest Contentful Paint (LCP)**: Measures loading performance (< 2.5s is good)
+- **First Input Delay (FID)**: Measures interactivity (< 100ms is good)
+- **Cumulative Layout Shift (CLS)**: Measures visual stability (< 0.1 is good)
+
+### Additional Important Metrics
+
+```javascript
+// Using the Performance API to measure custom metrics
+function measurePerformance() {
+  const navigation = performance.getEntriesByType('navigation')[0];
+  
+  console.log('DOM Content Loaded:', navigation.domContentLoadedEventEnd - navigation.domContentLoadedEventStart);
+  console.log('Load Complete:', navigation.loadEventEnd - navigation.loadEventStart);
+  console.log('Time to First Byte:', navigation.responseStart - navigation.requestStart);
+}
+```
+
+## Image Optimization
+
+### Modern Image Formats
+
+Use next-generation image formats for better compression:
+
+```html
+<!-- WebP with fallback -->
+<picture>
+  <source srcset="image.webp" type="image/webp">
+  <source srcset="image.avif" type="image/avif">
+  <img src="image.jpg" alt="Description">
+</picture>
+```
+
+### Responsive Images
+
+```html
+<!-- Responsive images with different sizes -->
+<img 
+  src="image-320w.jpg"
+  srcset="image-320w.jpg 320w, 
+          image-640w.jpg 640w, 
+          image-1024w.jpg 1024w"
+  sizes="(max-width: 320px) 280px, 
+         (max-width: 640px) 600px, 
+         1024px"
+  alt="Responsive image"
+>
+```
+
+### Lazy Loading
+
+```html
+<!-- Native lazy loading -->
+<img src="image.jpg" alt="Description" loading="lazy">
+
+<!-- Intersection Observer for more control -->
+<script>
+const images = document.querySelectorAll('img[data-src]');
+
+const imageObserver = new IntersectionObserver((entries, observer) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const img = entry.target;
+      img.src = img.dataset.src;
+      img.classList.remove('lazy');
+      observer.unobserve(img);
+    }
+  });
+});
+
+images.forEach(img => imageObserver.observe(img));
+</script>
+```
+
+## Code Splitting and Bundling
+
+### Dynamic Imports
+
+```javascript
+// Route-based code splitting
+const Home = lazy(() => import('./pages/Home'));
+const About = lazy(() => import('./pages/About'));
+const Contact = lazy(() => import('./pages/Contact'));
+
+function App() {
+  return (
+    <Router>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+        </Routes>
+      </Suspense>
+    </Router>
+  );
+}
+```
+
+### Component-level Splitting
+
+```javascript
+// Split heavy components
+const HeavyChart = lazy(() => import('./components/HeavyChart'));
+
+function Dashboard() {
+  const [showChart, setShowChart] = useState(false);
+  
+  return (
+    <div>
+      <button onClick={() => setShowChart(true)}>
+        Show Chart
+      </button>
+      
+      {showChart && (
+        <Suspense fallback={<ChartSkeleton />}>
+          <HeavyChart />
+        </Suspense>
+      )}
+    </div>
+  );
+}
+```
+
+## Caching Strategies
+
+### HTTP Caching
+
+```javascript
+// Service Worker for aggressive caching
+self.addEventListener('fetch', event => {
+  if (event.request.url.includes('/api/')) {
+    event.respondWith(
+      caches.match(event.request)
+        .then(response => {
+          return response || fetch(event.request)
+            .then(fetchResponse => {
+              const responseClone = fetchResponse.clone();
+              caches.open('api-cache').then(cache => {
+                cache.put(event.request, responseClone);
+              });
+              return fetchResponse;
+            });
+        })
+    );
+  }
+});
+```
+
+### Browser Storage
+
+```javascript
+// Intelligent caching with expiration
+class CacheManager {
+  set(key, data, ttl = 3600000) { // 1 hour default
+    const item = {
+      data,
+      timestamp: Date.now(),
+      ttl
+    };
+    localStorage.setItem(key, JSON.stringify(item));
+  }
+  
+  get(key) {
+    const item = localStorage.getItem(key);
+    if (!item) return null;
+    
+    const parsed = JSON.parse(item);
+    if (Date.now() - parsed.timestamp > parsed.ttl) {
+      localStorage.removeItem(key);
+      return null;
+    }
+    
+    return parsed.data;
+  }
+}
+```
+
+## Database and API Optimization
+
+### Database Queries
+
+```javascript
+// Efficient database queries
+// Bad: N+1 query problem
+const users = await db.user.findMany();
+const usersWithPosts = await Promise.all(
+  users.map(user => 
+    db.post.findMany({ where: { userId: user.id } })
+  )
+);
+
+// Good: Single query with include
+const usersWithPosts = await db.user.findMany({
+  include: {
+    posts: true
+  }
+});
+```
+
+### API Response Optimization
+
+```javascript
+// GraphQL with field selection
+const GET_USER_POSTS = gql`
+  query GetUserPosts($userId: ID!) {
+    user(id: $userId) {
+      id
+      name
+      posts {
+        id
+        title
+        excerpt
+        publishedAt
+      }
+    }
+  }
+`;
+
+// REST API with query parameters
+const response = await fetch('/api/users/123?fields=id,name,email&include=posts');
+```
+
+## Performance Monitoring
+
+### Real User Monitoring (RUM)
+
+```javascript
+// Custom performance tracking
+class PerformanceTracker {
+  static trackPageLoad() {
+    window.addEventListener('load', () => {
+      const navigation = performance.getEntriesByType('navigation')[0];
+      
+      // Send to analytics
+      this.sendMetrics({
+        lcp: this.getLCP(),
+        fid: this.getFID(),
+        cls: this.getCLS(),
+        loadTime: navigation.loadEventEnd - navigation.loadEventStart
+      });
+    });
+  }
+  
+  static getLCP() {
+    return new Promise(resolve => {
+      new PerformanceObserver(list => {
+        const entries = list.getEntries();
+        resolve(entries[entries.length - 1].startTime);
+      }).observe({ entryTypes: ['largest-contentful-paint'] });
+    });
+  }
+}
+```
+
+### Bundle Analysis
+
+```bash
+# Analyze bundle size
+npm install --save-dev webpack-bundle-analyzer
+
+# Add to package.json scripts
+"analyze": "webpack-bundle-analyzer build/static/js/*.js"
+```
+
+## Critical Rendering Path Optimization
+
+### Inline Critical CSS
+
+```html
+<!-- Inline critical CSS -->
+<style>
+  /* Critical above-the-fold styles */
+  body { margin: 0; font-family: Arial; }
+  .header { background: #333; color: white; }
+  .hero { height: 100vh; background: linear-gradient(...); }
+</style>
+
+<!-- Load non-critical CSS asynchronously -->
+<link rel="preload" href="styles.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+```
+
+### Resource Hints
+
+```html
+<!-- Preload critical resources -->
+<link rel="preload" href="/fonts/main.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/images/hero.jpg" as="image">
+
+<!-- Prefetch for next page -->
+<link rel="prefetch" href="/about">
+
+<!-- Preconnect to external domains -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://api.example.com">
+```
+
+## Mobile Performance
+
+### Touch Optimization
+
+```css
+/* Optimize touch interactions */
+.button {
+  min-height: 44px; /* Minimum touch target */
+  touch-action: manipulation; /* Disable double-tap zoom */
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+```
+
+### Mobile-specific Optimizations
+
+```javascript
+// Detect mobile and optimize accordingly
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+if (isMobile) {
+  // Load lighter version of components
+  const Component = lazy(() => import('./components/MobileComponent'));
+} else {
+  const Component = lazy(() => import('./components/DesktopComponent'));
+}
+```
+
+## Performance Testing Tools
+
+### Lighthouse CI
+
+```yaml
+# .lighthouserc.js
+module.exports = {
+  ci: {
+    collect: {
+      numberOfRuns: 3,
+      url: ['http://localhost:3000']
+    },
+    assert: {
+      assertions: {
+        'categories:performance': ['error', { minScore: 0.9 }],
+        'categories:accessibility': ['error', { minScore: 0.9 }]
+      }
+    }
+  }
+};
+```
+
+### WebPageTest Integration
+
+```javascript
+// Automated performance testing
+const webPageTest = require('webpagetest');
+
+const wpt = new webPageTest('www.webpagetest.org');
+
+wpt.runTest('https://example.com', (err, data) => {
+  console.log('Test ID:', data.data.testId);
+  
+  // Poll for results
+  const checkResults = () => {
+    wpt.getTestResults(data.data.testId, (err, result) => {
+      if (result.statusCode === 200) {
+        console.log('Performance Score:', result.data.average.firstView['Speed Index']);
+      } else {
+        setTimeout(checkResults, 30000); // Check again in 30 seconds
+      }
+    });
+  };
+  
+  checkResults();
+});
+```
+
+## Conclusion
+
+Web performance optimization is an ongoing process that requires attention to multiple aspects of your application. Key strategies include:
+
+1. **Measure First**: Use tools like Lighthouse, WebPageTest, and real user monitoring
+2. **Optimize Images**: Use modern formats, responsive images, and lazy loading
+3. **Implement Code Splitting**: Reduce initial bundle size with dynamic imports
+4. **Leverage Caching**: Use HTTP caching, service workers, and browser storage
+5. **Monitor Continuously**: Set up automated performance monitoring and alerts
+
+Remember that performance optimization should be balanced with user experience and development velocity. Focus on the optimizations that provide the biggest impact for your specific use case.
+
+By implementing these techniques systematically, you can significantly improve your website's performance and provide a better experience for your users.
