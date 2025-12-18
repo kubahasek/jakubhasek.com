@@ -1,6 +1,5 @@
-import type { NextConfig } from "next";
 import createMDX from "@next/mdx";
-import rehypeHighlight from "rehype-highlight";
+import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   // Configure `pageExtensions` to include markdown and MDX files
@@ -13,7 +12,10 @@ const nextConfig: NextConfig = {
 const withMDX = createMDX({
   // Add markdown plugins here, as desired
   options: {
-    rehypePlugins: [rehypeHighlight],
+    rehypePlugins: [
+      // Use string path instead of importing to make it serializable
+      "rehype-highlight",
+    ],
   },
 });
 
