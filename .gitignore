@@ -31,3 +31,4 @@ yarn-error.log*
 # tanstack start
 .vinxi
 .output
+/.next
