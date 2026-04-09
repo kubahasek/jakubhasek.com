@@ -1,8 +1,29 @@
-import { getAllPosts } from '@/lib/mdx';
-import Link from 'next/link';
+import { createFileRoute, createServerFn } from '@tanstack/react-router'
+import { createServerFn as createFn } from '@tanstack/react-start'
+import { getAllPosts } from '@/lib/mdx'
 
-export async function BlogPosts() {
-  const posts = getAllPosts();
+const getPosts = createFn({ method: 'GET' })
+  .handler(async () => {
+    return getAllPosts()
+  })
+
+export const Route = createFileRoute('/blog/')({
+  head: () => ({
+    meta: [
+      { title: 'Blog - Jakub Hašek' },
+      { name: 'description', content: 'Read Jakub Hašek\'s latest thoughts on web development, React, TypeScript, and modern development practices.' },
+    ],
+  }),
+  loader: async () => {
+    const posts = getAllPosts()
+    return { posts }
+  },
+  component: BlogPage,
+})
+
+function BlogPage() {
+  const { posts } = Route.useLoaderData()
+
   return (
     <section id="blog" className="min-h-screen px-6 py-24 md:px-16">
       <div className="max-w-6xl">
@@ -15,7 +36,7 @@ export async function BlogPosts() {
 
         <div className="space-y-6">
           {posts.map((post) => (
-            <Link
+            <a
               key={post.slug}
               href={`/blog/${post.slug}`}
               className="group block rounded-lg border border-border bg-card p-6 shadow-sm transition-all hover:border-accent hover:shadow-lg"
@@ -39,10 +60,10 @@ export async function BlogPosts() {
               <p className="mb-4 leading-relaxed text-muted-foreground">{post.excerpt}</p>
 
               <div className="font-medium text-accent">Read more →</div>
-            </Link>
+            </a>
           ))}
         </div>
       </div>
     </section>
-  );
+  )
 }

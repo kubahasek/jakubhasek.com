@@ -1,6 +1,4 @@
-"use client"
-
-import { useEffect, useState } from "react"
+import { useEffect, useState } from 'react'
 
 export function Hero() {
   const [showCursor, setShowCursor] = useState(true)
@@ -32,18 +30,18 @@ export function Hero() {
         </p>
 
         <div className="flex flex-wrap gap-4">
-          <button
-            onClick={() => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })}
+          <a
+            href="/projects"
             className="rounded-lg bg-foreground px-8 py-4 font-medium text-background transition-all hover:bg-foreground/90 hover:shadow-lg"
           >
             View Projects
-          </button>
-          <button
-            onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
+          </a>
+          <a
+            href="/contact"
             className="rounded-lg border-2 border-border bg-transparent px-8 py-4 font-medium text-foreground transition-all hover:border-accent hover:bg-accent/5"
           >
             Get in Touch
-          </button>
+          </a>
         </div>
 
         <div className="mt-12 flex items-center gap-1 font-mono text-sm text-muted-foreground">
