@@ -1,30 +1,29 @@
-FROM oven/bun:1 AS base
-WORKDIR /usr/src/app
+FROM node:22-alpine AS base
+RUN apk add --no-cache libc6-compat
+WORKDIR /app
 
-FROM base AS install
-RUN mkdir -p /temp/dev
-COPY package.json bun.lock* .npmrc* /temp/dev/
-RUN cd /temp/dev && bun install --frozen-lockfile
+FROM base AS deps
+COPY package.json package-lock.json ./
+RUN npm ci
 
-RUN mkdir -p /temp/prod
-COPY package.json bun.lock* .npmrc* /temp/prod/
-RUN cd /temp/prod && bun install --frozen-lockfile --production
-
-FROM base AS prerelease
-COPY --from=install /temp/dev/node_modules node_modules
+FROM base AS builder
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+RUN npm run build
 
+FROM base AS runner
 ENV NODE_ENV=production
-RUN bun run build
+WORKDIR /app
 
-FROM base AS release
-COPY --from=install /temp/prod/node_modules node_modules
-COPY --from=prerelease /usr/src/app/dist ./dist
-COPY --from=prerelease /usr/src/app/public ./public
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 appuser
 
-USER bun
-EXPOSE 3000/tcp
+COPY --from=builder /app/.output ./.output
+COPY --from=builder /app/public ./public
+
+USER appuser
+EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
-CMD ["bun", "run", "dist/server/index.mjs"]
+CMD ["node", ".output/server/index.mjs"]
