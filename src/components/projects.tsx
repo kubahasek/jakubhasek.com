@@ -2,7 +2,7 @@ const projects = [
   {
     title: "E-Commerce Platform",
     description: "Full-stack e-commerce solution with real-time inventory, payment processing, and admin dashboard.",
-    tags: ["Next.js", "Stripe", "PostgreSQL", "Tailwind"],
+    tags: ["TypeScript", "Stripe", "PostgreSQL", "Tailwind"],
     github: "#",
     demo: "#",
   },
@@ -16,7 +16,7 @@ const projects = [
   {
     title: "Portfolio Generator",
     description: "SaaS platform that helps developers create beautiful portfolio websites with customizable templates.",
-    tags: ["Next.js", "Supabase", "Tailwind", "MDX"],
+    tags: ["TanStack Start", "Supabase", "Tailwind", "MDX"],
     github: "#",
     demo: "#",
   },

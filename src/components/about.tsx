@@ -1,5 +1,5 @@
 export function About() {
-  const skills = ["React", "Next.js", "TypeScript", "Node.js", "Tailwind", "mySQL", "Git", "Figma"]
+  const skills = ["React", "TypeScript", "Node.js", "Tailwind", "mySQL", "Git", "Figma"]
 
   return (
     <section id="about" className="min-h-screen px-6 py-24 md:px-16">

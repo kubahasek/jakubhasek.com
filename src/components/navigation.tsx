@@ -1,20 +1,17 @@
-"use client"
-
-import { usePathname } from "next/navigation"
-import Link from "next/link"
-import { useTheme } from "@/components/theme-provider"
-import { Moon, Sun } from "lucide-react"
+import { useLocation, Link } from '@tanstack/react-router'
+import { useTheme } from '@/components/theme-provider'
+import { Moon, Sun } from 'lucide-react'
 
 export function Navigation() {
-  const pathname = usePathname()
+  const location = useLocation()
   const { theme, toggleTheme } = useTheme()
+  const pathname = location.pathname
 
   const navItems = [
-    { id: "/", label: "Home" },
-    { id: "/about", label: "About" },
-    // { id: "/projects", label: "Projects" },
-    { id: "/blog", label: "Blog" },
-    { id: "/contact", label: "Contact" },
+    { id: '/', label: 'Home' },
+    { id: '/about', label: 'About' },
+    { id: '/blog', label: 'Blog' },
+    { id: '/contact', label: 'Contact' },
   ]
 
   return (
@@ -31,21 +28,21 @@ export function Navigation() {
           return (
             <Link
               key={item.id}
-              href={item.id}
+              to={item.id}
               className={`group flex items-center gap-3 rounded-lg px-4 py-3 text-left transition-all hover:bg-accent/10 ${
-                isActive ? "bg-accent/10" : ""
+                isActive ? 'bg-accent/10' : ''
               }`}
             >
               <span
                 className={`font-mono text-sm transition-colors ${
-                  isActive ? "text-accent" : "text-muted-foreground"
+                  isActive ? 'text-accent' : 'text-muted-foreground'
                 }`}
               >
-                {isActive ? ">" : " "}
+                {isActive ? '>' : ' '}
               </span>
               <span
                 className={`text-sm font-medium transition-colors ${
-                  isActive ? "text-foreground" : "text-muted-foreground"
+                  isActive ? 'text-foreground' : 'text-muted-foreground'
                 }`}
               >
                 {item.label}
@@ -60,8 +57,8 @@ export function Navigation() {
           onClick={toggleTheme}
           className="flex w-full items-center justify-center gap-2 rounded-lg border border-border bg-card px-4 py-3 text-sm font-medium text-foreground transition-colors hover:bg-accent/10"
         >
-          {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-          {theme === "dark" ? "Light" : "Dark"}
+          {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+          {theme === 'dark' ? 'Light' : 'Dark'}
         </button>
       </div>
     </nav>
