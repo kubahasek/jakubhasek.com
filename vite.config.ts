@@ -12,10 +12,10 @@ export default defineConfig({
   plugins: [
     tailwindcss(),
     cloudflare({ viteEnvironment: { name: "ssr" } }),
+    tanstackStart(),
     tsConfigPaths({
       projects: ["./tsconfig.json"],
     }),
-    tanstackStart(),
     viteReact(),
   ],
 });

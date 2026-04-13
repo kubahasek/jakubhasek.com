@@ -7,9 +7,9 @@ import rehypeHighlight from "rehype-highlight";
 import rehypeStringify from "rehype-stringify";
 
 const postFiles = import.meta.glob("../../content/posts/*.mdx", {
-  query: "?raw",
-  import: "default",
   eager: true,
+  import: "default",
+  query: "?raw",
 }) as Record<string, string>;
 
 export interface PostMeta {
@@ -46,47 +46,10 @@ function markdownToHtmlSync(markdown: string): string {
   return result.toString();
 }
 
-export function getAllPosts(): PostMeta[] {
-  try {
-    const allPostsData = Object.entries(postFiles).map(
-      ([filePath, fileContents]) => {
-        const slug = getSlugFromPath(filePath);
-        const { data } = matter(fileContents);
-
-        return {
-          slug,
-          title: data.title || "",
-          date: data.date || "",
-          excerpt: data.excerpt || "",
-          readTime: data.readTime || "",
-          visible: data.visible || false,
-        };
-      },
-    );
-
-    return allPostsData
-      .filter((post) => post.visible)
-      .sort((a, b) => (a.date < b.date ? 1 : -1));
-  } catch (error) {
-    console.error("Error reading posts:", error);
-    return [];
-  }
-}
-
-export function getPostBySlug(slug: string): Post | null {
-  try {
-    const fileEntry = Object.entries(postFiles).find(
-      ([filePath]) => getSlugFromPath(filePath) === slug,
-    );
-
-    if (!fileEntry) {
-      return null;
-    }
-
-    const [, fileContents] = fileEntry;
+function getPostEntries() {
+  return Object.entries(postFiles).map(([filePath, fileContents]) => {
+    const slug = getSlugFromPath(filePath);
     const { data, content } = matter(fileContents);
-
-    const htmlContent = markdownToHtmlSync(content);
 
     return {
       slug,
@@ -96,19 +59,30 @@ export function getPostBySlug(slug: string): Post | null {
       readTime: data.readTime || "",
       visible: data.visible !== undefined ? data.visible : true,
       content,
-      htmlContent,
     };
-  } catch (error) {
-    console.error(`Error reading post ${slug}:`, error);
+  });
+}
+
+export function getAllPosts(): PostMeta[] {
+  return getPostEntries()
+    .filter((post) => post.visible)
+    .sort((a, b) => (a.date < b.date ? 1 : -1))
+    .map(({ content, ...post }) => post);
+}
+
+export function getPostBySlug(slug: string): Post | null {
+  const post = getPostEntries().find((entry) => entry.slug === slug);
+
+  if (!post) {
     return null;
   }
+
+  return {
+    ...post,
+    htmlContent: markdownToHtmlSync(post.content),
+  };
 }
 
 export function getAllPostSlugs(): string[] {
-  try {
-    return Object.keys(postFiles).map((filePath) => getSlugFromPath(filePath));
-  } catch (error) {
-    console.error("Error reading post slugs:", error);
-    return [];
-  }
+  return getPostEntries().map((post) => post.slug);
 }
