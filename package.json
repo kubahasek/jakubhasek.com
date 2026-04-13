@@ -7,8 +7,8 @@
   "scripts": {
     "dev": "vite dev",
     "build": "vite build && tsc --noEmit",
-    "preview": "bun run build && wrangler dev --config dist/server/wrangler.json",
-    "deploy": "bun run build && wrangler deploy --config dist/server/wrangler.json",
+    "preview": "bun run build && wrangler dev",
+    "deploy": "bun run build && wrangler deploy",
     "cf-typegen": "wrangler types",
     "postinstall": "bun run cf-typegen",
     "lint": "biome check src/",
