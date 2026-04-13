@@ -2,14 +2,15 @@
   "name": "portfolio",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "bun@1.2.15",
   "type": "module",
   "scripts": {
     "dev": "vite dev",
     "build": "vite build && tsc --noEmit",
     "preview": "vite preview",
-    "deploy": "npm run build && wrangler deploy",
+    "deploy": "bun run build && wrangler deploy",
     "cf-typegen": "wrangler types",
-    "start": "node server.mjs",
+    "postinstall": "bun run cf-typegen",
     "lint": "biome check src/",
     "typecheck": "tsc --noEmit"
   },

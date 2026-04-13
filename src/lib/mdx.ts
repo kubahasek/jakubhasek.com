@@ -26,6 +26,15 @@ export interface Post extends PostMeta {
   htmlContent: string;
 }
 
+function getSlugFromPath(filePath: string): string {
+  return (
+    filePath
+      .split("/")
+      .pop()
+      ?.replace(/\.mdx$/, "") ?? ""
+  );
+}
+
 function markdownToHtmlSync(markdown: string): string {
   const result = unified()
     .use(remarkParse)
@@ -39,8 +48,7 @@ function markdownToHtmlSync(markdown: string): string {
 
 function getPostEntries() {
   return Object.entries(postFiles).map(([filePath, fileContents]) => {
-    const fileName = filePath.split("/").at(-1) ?? "";
-    const slug = fileName.replace(/\.mdx$/, "");
+    const slug = getSlugFromPath(filePath);
     const { data, content } = matter(fileContents);
 
     return {

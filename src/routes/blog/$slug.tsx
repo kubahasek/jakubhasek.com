@@ -19,10 +19,9 @@ export const Route = createFileRoute("/blog/$slug")({
 });
 
 function BlogPostPage() {
-  const loaderData = Route.useLoaderData() as
-    | { post: ReturnType<typeof getPostBySlug> }
-    | undefined;
-  const post = loaderData?.post;
+  const { post } = Route.useLoaderData() as {
+    post: ReturnType<typeof getPostBySlug>;
+  };
 
   if (!post) {
     return (

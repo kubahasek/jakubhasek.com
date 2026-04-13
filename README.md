@@ -1,9 +1,12 @@
+This is a TanStack Start app configured for Cloudflare Workers with Bun.
+
 ## Development
 
-Run the local dev server:
+Install dependencies and run the local dev server:
 
 ```bash
-npm run dev
+bun install
+bun dev
 ```
 
 ## Build
@@ -11,7 +14,13 @@ npm run dev
 Create a production build:
 
 ```bash
-npm run build
+bun run build
+```
+
+Preview the production app locally:
+
+```bash
+bun run preview
 ```
 
 ## Cloudflare Workers
@@ -21,7 +30,7 @@ This app is configured for Cloudflare Workers via `@cloudflare/vite-plugin` and 
 1. Log in to Cloudflare:
 
 ```bash
-npx wrangler login
+bunx wrangler login
 ```
 
 2. Review `wrangler.jsonc` and update the Worker name if needed.
@@ -29,7 +38,17 @@ npx wrangler login
 3. Deploy:
 
 ```bash
-npm run deploy
+bun run deploy
 ```
 
 The blog content is bundled at build time, so the app no longer depends on Node filesystem access in production.
+
+## Notes
+
+- This repo is Bun-only and pins Bun via `packageManager`.
+- The Worker entrypoint is defined in `wrangler.jsonc`.
+
+## Learn More
+
+- [TanStack Start Documentation](https://tanstack.com/start)
+- [Cloudflare Workers Documentation](https://developers.cloudflare.com/workers/)
