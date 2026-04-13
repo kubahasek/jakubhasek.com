@@ -1,6 +1,3 @@
-import { createStart } from '@tanstack/react-start'
-import { createRouter } from './router'
+import { createStart } from "@tanstack/react-start";
 
-const router = createRouter()
-
-export const start = createStart({ router })
+export const start = createStart(() => ({}));

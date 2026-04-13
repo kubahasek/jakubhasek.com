@@ -1,35 +1,35 @@
-import { createFileRoute, createServerFn } from '@tanstack/react-router'
-import { createServerFn as createFn } from '@tanstack/react-start'
-import { getAllPosts } from '@/lib/mdx'
+import { createFileRoute } from "@tanstack/react-router";
+import { getAllPosts } from "@/lib/mdx";
 
-const getPosts = createFn({ method: 'GET' })
-  .handler(async () => {
-    return getAllPosts()
-  })
-
-export const Route = createFileRoute('/blog/')({
+export const Route = createFileRoute("/blog/")({
   head: () => ({
     meta: [
-      { title: 'Blog - Jakub Hašek' },
-      { name: 'description', content: 'Read Jakub Hašek\'s latest thoughts on web development, React, TypeScript, and modern development practices.' },
+      { title: "Blog - Jakub Hašek" },
+      {
+        name: "description",
+        content:
+          "Read Jakub Hašek's latest thoughts on web development, React, TypeScript, and modern development practices.",
+      },
     ],
   }),
   loader: async () => {
-    const posts = getAllPosts()
-    return { posts }
+    const posts = getAllPosts();
+    return { posts };
   },
   component: BlogPage,
-})
+});
 
 function BlogPage() {
-  const { posts } = Route.useLoaderData()
+  const { posts } = Route.useLoaderData();
 
   return (
     <section id="blog" className="min-h-screen px-6 py-24 md:px-16">
       <div className="max-w-6xl">
         <div className="mb-8 font-mono text-sm text-accent">$ cat blog.log</div>
 
-        <h2 className="mb-12 text-3xl font-bold text-foreground md:text-4xl">Blog Posts</h2>
+        <h2 className="mb-12 text-3xl font-bold text-foreground md:text-4xl">
+          Blog Posts
+        </h2>
         {posts.length === 0 && (
           <p className="text-muted-foreground">Nothing to see here yet...</p>
         )}
@@ -57,7 +57,9 @@ function BlogPage() {
                 {post.title}
               </h3>
 
-              <p className="mb-4 leading-relaxed text-muted-foreground">{post.excerpt}</p>
+              <p className="mb-4 leading-relaxed text-muted-foreground">
+                {post.excerpt}
+              </p>
 
               <div className="font-medium text-accent">Read more →</div>
             </a>
@@ -65,5 +67,5 @@ function BlogPage() {
         </div>
       </div>
     </section>
-  )
+  );
 }

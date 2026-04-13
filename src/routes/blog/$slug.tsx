@@ -1,32 +1,34 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { getPostBySlug } from '@/lib/mdx'
+import { createFileRoute } from "@tanstack/react-router";
+import { getPostBySlug } from "@/lib/mdx";
 
-export const Route = createFileRoute('/blog/$slug')({
+export const Route = createFileRoute("/blog/$slug")({
   head: ({ params }) => {
-    const post = getPostBySlug(params.slug)
+    const post = getPostBySlug(params.slug);
     return {
       meta: [
-        { title: post?.title ?? 'Post Not Found' },
-        { name: 'description', content: post?.excerpt ?? '' },
+        { title: post?.title ?? "Post Not Found" },
+        { name: "description", content: post?.excerpt ?? "" },
       ],
-    }
+    };
   },
   loader: async ({ params }) => {
-    const post = getPostBySlug(params.slug)
-    return { post }
+    const post = getPostBySlug(params.slug);
+    return { post };
   },
   component: BlogPostPage,
-})
+});
 
 function BlogPostPage() {
-  const { post } = Route.useLoaderData()
+  const { post } = Route.useLoaderData() as {
+    post: ReturnType<typeof getPostBySlug>;
+  };
 
   if (!post) {
     return (
       <div className="mx-auto max-w-4xl px-6 py-24 md:px-16">
         <h1 className="text-4xl font-bold text-foreground">Post Not Found</h1>
       </div>
-    )
+    );
   }
 
   return (
@@ -40,17 +42,20 @@ function BlogPostPage() {
         </h1>
         <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
           <time dateTime={post.date}>
-            {new Date(post.date).toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
+            {new Date(post.date).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
             })}
           </time>
           <span>•</span>
           <span>{post.readTime} read</span>
         </div>
       </header>
-      <div className="prose prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: post.htmlContent }} />
+      <div
+        className="prose prose-invert max-w-none"
+        dangerouslySetInnerHTML={{ __html: post.htmlContent }}
+      />
     </article>
-  )
+  );
 }

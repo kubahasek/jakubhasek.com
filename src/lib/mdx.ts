@@ -1,27 +1,38 @@
-import fs from 'fs'
-import path from 'path'
-import matter from 'gray-matter'
-import { unified } from 'unified'
-import remarkParse from 'remark-parse'
-import remarkGfm from 'remark-gfm'
-import remarkRehype from 'remark-rehype'
-import rehypeHighlight from 'rehype-highlight'
-import rehypeStringify from 'rehype-stringify'
+import matter from "gray-matter";
+import { unified } from "unified";
+import remarkParse from "remark-parse";
+import remarkGfm from "remark-gfm";
+import remarkRehype from "remark-rehype";
+import rehypeHighlight from "rehype-highlight";
+import rehypeStringify from "rehype-stringify";
 
-const postsDirectory = path.join(process.cwd(), 'content/posts')
+const postFiles = import.meta.glob("../../content/posts/*.mdx", {
+  query: "?raw",
+  import: "default",
+  eager: true,
+}) as Record<string, string>;
 
 export interface PostMeta {
-  title: string
-  date: string
-  excerpt: string
-  readTime: string
-  slug: string
-  visible: boolean
+  title: string;
+  date: string;
+  excerpt: string;
+  readTime: string;
+  slug: string;
+  visible: boolean;
 }
 
 export interface Post extends PostMeta {
-  content: string
-  htmlContent: string
+  content: string;
+  htmlContent: string;
+}
+
+function getSlugFromPath(filePath: string): string {
+  return (
+    filePath
+      .split("/")
+      .pop()
+      ?.replace(/\.mdx$/, "") ?? ""
+  );
 }
 
 function markdownToHtmlSync(markdown: string): string {
@@ -31,72 +42,73 @@ function markdownToHtmlSync(markdown: string): string {
     .use(remarkRehype)
     .use(rehypeHighlight)
     .use(rehypeStringify)
-    .processSync(markdown)
-  return result.toString()
+    .processSync(markdown);
+  return result.toString();
 }
 
 export function getAllPosts(): PostMeta[] {
   try {
-    const fileNames = fs.readdirSync(postsDirectory)
-    const allPostsData = fileNames
-      .filter((fileName) => fileName.endsWith('.mdx'))
-      .map((fileName) => {
-        const slug = fileName.replace(/\.mdx$/, '')
-        const fullPath = path.join(postsDirectory, fileName)
-        const fileContents = fs.readFileSync(fullPath, 'utf8')
-        const { data } = matter(fileContents)
+    const allPostsData = Object.entries(postFiles).map(
+      ([filePath, fileContents]) => {
+        const slug = getSlugFromPath(filePath);
+        const { data } = matter(fileContents);
 
         return {
           slug,
-          title: data.title || '',
-          date: data.date || '',
-          excerpt: data.excerpt || '',
-          readTime: data.readTime || '',
+          title: data.title || "",
+          date: data.date || "",
+          excerpt: data.excerpt || "",
+          readTime: data.readTime || "",
           visible: data.visible || false,
-        }
-      })
+        };
+      },
+    );
 
     return allPostsData
       .filter((post) => post.visible)
-      .sort((a, b) => (a.date < b.date ? 1 : -1))
+      .sort((a, b) => (a.date < b.date ? 1 : -1));
   } catch (error) {
-    console.error('Error reading posts directory:', error)
-    return []
+    console.error("Error reading posts:", error);
+    return [];
   }
 }
 
 export function getPostBySlug(slug: string): Post | null {
   try {
-    const fullPath = path.join(postsDirectory, `${slug}.mdx`)
-    const fileContents = fs.readFileSync(fullPath, 'utf8')
-    const { data, content } = matter(fileContents)
+    const fileEntry = Object.entries(postFiles).find(
+      ([filePath]) => getSlugFromPath(filePath) === slug,
+    );
 
-    const htmlContent = markdownToHtmlSync(content)
+    if (!fileEntry) {
+      return null;
+    }
+
+    const [, fileContents] = fileEntry;
+    const { data, content } = matter(fileContents);
+
+    const htmlContent = markdownToHtmlSync(content);
 
     return {
       slug,
-      title: data.title || '',
-      date: data.date || '',
-      excerpt: data.excerpt || '',
-      readTime: data.readTime || '',
+      title: data.title || "",
+      date: data.date || "",
+      excerpt: data.excerpt || "",
+      readTime: data.readTime || "",
       visible: data.visible !== undefined ? data.visible : true,
       content,
       htmlContent,
-    }
+    };
   } catch (error) {
-    console.error(`Error reading post ${slug}:`, error)
-    return null
+    console.error(`Error reading post ${slug}:`, error);
+    return null;
   }
 }
 
 export function getAllPostSlugs(): string[] {
   try {
-    const fileNames = fs.readdirSync(postsDirectory)
-    return fileNames
-      .filter((fileName) => fileName.endsWith('.mdx'))
-      .map((fileName) => fileName.replace(/\.mdx$/, ''))
+    return Object.keys(postFiles).map((filePath) => getSlugFromPath(filePath));
   } catch (error) {
-    console.error('Error reading post slugs:', error)
-    return []
+    console.error("Error reading post slugs:", error);
+    return [];
   }
 }

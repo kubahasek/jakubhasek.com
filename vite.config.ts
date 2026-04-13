@@ -1,19 +1,21 @@
-import { tanstackStart } from '@tanstack/react-start/plugin/vite'
-import { defineConfig } from 'vite'
-import viteReact from '@vitejs/plugin-react'
-import tsConfigPaths from 'vite-tsconfig-paths'
-import tailwindcss from '@tailwindcss/vite'
+import { cloudflare } from "@cloudflare/vite-plugin";
+import { tanstackStart } from "@tanstack/react-start/plugin/vite";
+import { defineConfig } from "vite";
+import viteReact from "@vitejs/plugin-react";
+import tsConfigPaths from "vite-tsconfig-paths";
+import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
+  server: {
+    port: 3000,
+  },
   plugins: [
-    tsConfigPaths({
-      projects: ['./tsconfig.json'],
-    }),
     tailwindcss(),
+    cloudflare({ viteEnvironment: { name: "ssr" } }),
+    tsConfigPaths({
+      projects: ["./tsconfig.json"],
+    }),
     tanstackStart(),
     viteReact(),
   ],
-  ssr: {
-    external: ['gray-matter', 'rehype-highlight', 'rehype-stringify', 'remark-gfm', 'remark-parse', 'remark-rehype', 'unified'],
-  },
-})
+});

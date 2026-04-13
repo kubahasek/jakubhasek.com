@@ -24,6 +24,7 @@ yarn-error.log*
 # local env files
 .env*.local
 .env
+.wrangler
 
 # typescript
 *.tsbuildinfo
@@ -32,3 +33,4 @@ yarn-error.log*
 .vinxi
 .output
 /.next
+worker-configuration.d.ts
