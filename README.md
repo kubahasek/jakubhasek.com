@@ -27,6 +27,8 @@ bun run preview
 
 This app is configured for Cloudflare Workers via `@cloudflare/vite-plugin` and `wrangler`.
 
+The deploy step publishes the generated Worker config from `dist/server/wrangler.json` so Cloudflare also uploads the built client assets.
+
 1. Log in to Cloudflare:
 
 ```bash
