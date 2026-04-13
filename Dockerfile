@@ -19,6 +19,7 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 appuser
 
 COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/server.mjs ./server.mjs
 COPY --from=deps /app/node_modules ./node_modules
 
 USER appuser
@@ -26,4 +27,4 @@ EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
-CMD ["node", "dist/server/server.js"]
+CMD ["node", "server.mjs"]

@@ -13,14 +13,11 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "incremental": true,
+    "types": ["vite/client"],
     "paths": {
       "@/*": ["./src/*"]
     }
   },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    ".vinxi/types/**/*.ts"
-  ],
+  "include": ["**/*.ts", "**/*.tsx", ".vinxi/types/**/*.ts"],
   "exclude": ["node_modules"]
 }

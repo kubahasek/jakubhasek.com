@@ -32,3 +32,4 @@ yarn-error.log*
 .vinxi
 .output
 /.next
+.wrangler
