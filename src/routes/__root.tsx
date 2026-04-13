@@ -1,9 +1,11 @@
+/// <reference types="vite/client" />
 import {
   createRootRoute,
   HeadContent,
   Outlet,
   Scripts,
 } from "@tanstack/react-router";
+import * as React from "react";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Navigation } from "@/components/navigation";
 import appCss from "@/globals.css?url";
@@ -30,26 +32,33 @@ export const Route = createRootRoute({
       },
     ],
   }),
+  shellComponent: RootDocument,
   component: RootComponent,
 });
 
-function RootComponent() {
+function RootDocument({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>
       <body>
-        <ThemeProvider>
-          <div className="min-h-screen bg-background font-mono scanline">
-            <Navigation />
-            <main className="pl-0 md:pl-64">
-              <Outlet />
-            </main>
-          </div>
-        </ThemeProvider>
+        {children}
         <Scripts />
       </body>
     </html>
+  );
+}
+
+function RootComponent() {
+  return (
+    <ThemeProvider>
+      <div className="min-h-screen bg-background font-mono scanline">
+        <Navigation />
+        <main className="pl-0 md:pl-64">
+          <Outlet />
+        </main>
+      </div>
+    </ThemeProvider>
   );
 }

@@ -27,6 +27,8 @@ bun run preview
 
 This app is configured for Cloudflare Workers via `@cloudflare/vite-plugin` and `wrangler`.
 
+The root `wrangler.jsonc` deploys the built Worker from `dist/server/index.js` and uploads static assets from `dist/client`, which also matches how Cloudflare PR previews build this repo from GitHub.
+
 1. Log in to Cloudflare:
 
 ```bash

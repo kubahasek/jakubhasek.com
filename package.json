@@ -6,8 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite dev",
-    "build": "vite build && tsc --noEmit",
-    "preview": "vite preview",
+    "build": "vite build && tsc --noEmit && cp dist/server/assets/*.css dist/client/assets/",
+    "preview": "bun run build && wrangler dev",
     "deploy": "bun run build && wrangler deploy",
     "cf-typegen": "wrangler types",
     "postinstall": "bun run cf-typegen",
