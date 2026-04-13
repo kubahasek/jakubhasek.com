@@ -1,7 +1,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "portfolio",
-  "main": "./dist/server/index.js",
+  "main": "@tanstack/react-start/server-entry",
   "assets": {
     "directory": "./dist/client"
   },
