@@ -10,6 +10,9 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Navigation } from "@/components/navigation";
 import appCss from "@/globals.css?url";
 
+const openPanelClientId = "85c8ebc8-7439-44b5-918c-0148b80abb92";
+const openPanelInitScript = `window.op=window.op||function(){var n=[];return new Proxy(function(){arguments.length&&n.push([].slice.call(arguments))},{get:function(t,r){return"q"===r?n:function(){n.push([r].concat([].slice.call(arguments)))}} ,has:function(t,r){return"q"===r}}) }();window.op('init',{clientId:'${openPanelClientId}',trackScreenViews:true,trackOutgoingLinks:true,trackAttributes:true});`;
+
 export const Route = createRootRoute({
   head: () => ({
     meta: [
@@ -41,6 +44,8 @@ function RootDocument({ children }: { children: React.ReactNode }) {
     <html lang="en" suppressHydrationWarning>
       <head>
         <HeadContent />
+        <script dangerouslySetInnerHTML={{ __html: openPanelInitScript }} />
+        <script src="https://openpanel.dev/op1.js" defer async />
       </head>
       <body>
         {children}
