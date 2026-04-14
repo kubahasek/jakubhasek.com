@@ -1,21 +1,42 @@
-import { getAllPosts } from '@/lib/mdx';
-import Link from 'next/link';
+import { createFileRoute } from "@tanstack/react-router";
+import { getAllPosts } from "@/lib/mdx";
 
-export async function BlogPosts() {
-  const posts = getAllPosts();
+export const Route = createFileRoute("/blog/")({
+  head: () => ({
+    meta: [
+      { title: "Blog - Jakub Hašek" },
+      {
+        name: "description",
+        content:
+          "Read Jakub Hašek's latest thoughts on web development, React, TypeScript, and modern development practices.",
+      },
+    ],
+  }),
+  loader: async () => {
+    const posts = getAllPosts();
+    return { posts };
+  },
+  component: BlogPage,
+});
+
+function BlogPage() {
+  const { posts } = Route.useLoaderData();
+
   return (
     <section id="blog" className="min-h-screen px-6 py-24 md:px-16">
       <div className="max-w-6xl">
         <div className="mb-8 font-mono text-sm text-accent">$ cat blog.log</div>
 
-        <h2 className="mb-12 text-3xl font-bold text-foreground md:text-4xl">Blog Posts</h2>
+        <h2 className="mb-12 text-3xl font-bold text-foreground md:text-4xl">
+          Blog Posts
+        </h2>
         {posts.length === 0 && (
           <p className="text-muted-foreground">Nothing to see here yet...</p>
         )}
 
         <div className="space-y-6">
           {posts.map((post) => (
-            <Link
+            <a
               key={post.slug}
               href={`/blog/${post.slug}`}
               className="group block rounded-lg border border-border bg-card p-6 shadow-sm transition-all hover:border-accent hover:shadow-lg"
@@ -36,10 +57,12 @@ export async function BlogPosts() {
                 {post.title}
               </h3>
 
-              <p className="mb-4 leading-relaxed text-muted-foreground">{post.excerpt}</p>
+              <p className="mb-4 leading-relaxed text-muted-foreground">
+                {post.excerpt}
+              </p>
 
               <div className="font-medium text-accent">Read more →</div>
-            </Link>
+            </a>
           ))}
         </div>
       </div>

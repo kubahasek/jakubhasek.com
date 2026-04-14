@@ -4,17 +4,12 @@
 /node_modules
 /.pnp
 .pnp.js
-package-lock.json
 
 # testing
 /coverage
 
-# next.js
-/.next/
-/out/
-
-# production
-/build
+# production/build output
+/dist
 
 # misc
 .DS_Store
@@ -28,10 +23,13 @@ yarn-error.log*
 # local env files
 .env*.local
 .env
-
-# vercel
-.vercel
+.wrangler
 
 # typescript
 *.tsbuildinfo
-next-env.d.ts
+
+# tanstack start
+.vinxi
+.output
+/.next
+worker-configuration.d.ts
