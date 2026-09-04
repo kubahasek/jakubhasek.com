@@ -1,5 +1,10 @@
 import { StartClient } from "@tanstack/react-start/client";
+import { StrictMode } from "react";
+import { hydrateRoot } from "react-dom/client";
 
-export default function ClientApp() {
-  return <StartClient />;
-}
+hydrateRoot(
+  document,
+  <StrictMode>
+    <StartClient />
+  </StrictMode>,
+);
