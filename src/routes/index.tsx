@@ -128,6 +128,13 @@ function HomePage() {
       <footer>
         <span>© {new Date().getFullYear()} Jakub Hašek</span>
         <div>
+          <button
+            className="footer-button"
+            type="button"
+            onClick={() => window.dispatchEvent(new Event("show-analytics-preferences"))}
+          >
+            Analytics settings
+          </button>
           <a
             href="https://github.com/kubahasek"
             target="_blank"

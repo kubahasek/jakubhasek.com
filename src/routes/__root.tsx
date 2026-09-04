@@ -1,6 +1,6 @@
-import { PostHogProvider } from "@posthog/react";
+import { PostHogProvider, usePostHog } from "@posthog/react";
 import { createRootRoute, HeadContent, Outlet, Scripts } from "@tanstack/react-router";
-import type { ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import "@/globals.css";
 
 export const Route = createRootRoute({
@@ -63,11 +63,59 @@ function PostHogRoot({ children }: { children: ReactNode }) {
       options={{
         api_host: apiHost,
         capture_exceptions: true,
+        cookieless_mode: "on_reject",
         defaults: "2025-05-24",
         debug: import.meta.env.DEV,
       }}
     >
       {children}
+      <AnalyticsConsent />
     </PostHogProvider>
+  );
+}
+
+function AnalyticsConsent() {
+  const posthog = usePostHog();
+  const [isVisible, setIsVisible] = useState(true);
+
+  useEffect(() => {
+    if (posthog.has_opted_in_capturing() || posthog.has_opted_out_capturing()) {
+      setIsVisible(false);
+    }
+
+    const showPreferences = () => setIsVisible(true);
+    window.addEventListener("show-analytics-preferences", showPreferences);
+    return () => window.removeEventListener("show-analytics-preferences", showPreferences);
+  }, [posthog]);
+
+  if (!isVisible) return null;
+
+  const chooseAnalytics = (accepted: boolean) => {
+    if (accepted) {
+      posthog.opt_in_capturing();
+    } else {
+      posthog.opt_out_capturing();
+    }
+    setIsVisible(false);
+  };
+
+  return (
+    <aside className="consent-banner" aria-label="Analytics preferences">
+      <div className="consent-copy">
+        <strong>Analytics preferences</strong>
+        <p>
+          Full analytics help me understand how this site is used. If you decline,
+          I’ll only collect anonymous, cookieless page counts.
+        </p>
+      </div>
+      <div className="consent-actions">
+        <button type="button" onClick={() => chooseAnalytics(false)}>
+          Use cookieless
+        </button>
+        <button className="consent-accept" type="button" onClick={() => chooseAnalytics(true)}>
+          Accept analytics
+        </button>
+      </div>
+    </aside>
   );
 }

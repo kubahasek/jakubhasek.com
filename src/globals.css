@@ -82,7 +82,23 @@ h1 em, .contact em { color: var(--primary); font-style: normal; }
 .email-link:hover { background: var(--primary-soft); }
 footer { margin-top: 0; padding: 20px 0; display: flex; justify-content: space-between; gap: 20px; font: 500 9px "JetBrains Mono", monospace; text-transform: uppercase; }
 footer div { display: flex; gap: 24px; }
-footer a:hover { color: var(--primary); }
+footer a:hover, .footer-button:hover { color: var(--primary); }
+.footer-button { padding: 0; border: 0; background: none; color: inherit; cursor: pointer; font: inherit; text-transform: inherit; }
+.footer-button:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
+
+.consent-banner {
+  position: fixed; z-index: 50; right: 24px; bottom: 24px; width: min(560px, calc(100vw - 48px));
+  display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: end; padding: 20px;
+  border: 1px solid var(--foreground); background: var(--background); box-shadow: 8px 8px 0 var(--foreground);
+}
+.consent-copy strong { font: 600 11px "JetBrains Mono", monospace; text-transform: uppercase; letter-spacing: .08em; }
+.consent-copy p { margin: 8px 0 0; color: var(--muted-foreground); font-size: 13px; line-height: 1.45; }
+.consent-actions { display: flex; gap: 8px; }
+.consent-actions button { padding: 10px 12px; border: 1px solid var(--foreground); background: var(--background); color: var(--foreground); cursor: pointer; font: 500 9px "JetBrains Mono", monospace; text-transform: uppercase; letter-spacing: .04em; }
+.consent-actions button:hover { background: var(--primary-soft); }
+.consent-actions .consent-accept { background: var(--primary); }
+.consent-actions .consent-accept:hover { background: var(--primary-soft); }
+.consent-actions button:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
 
 @media (max-width: 760px) {
   .topbar { padding-inline: 12px; }
@@ -110,6 +126,8 @@ footer a:hover { color: var(--primary); }
   .contact h2 { font-size: clamp(4.6rem, 23vw, 7rem); }
   .email-link { font-size: 12px; }
   footer { flex-direction: column; }
+  .consent-banner { right: 12px; bottom: 12px; width: calc(100vw - 24px); grid-template-columns: 1fr; gap: 16px; padding: 16px; box-shadow: 5px 5px 0 var(--foreground); }
+  .consent-actions { display: grid; grid-template-columns: 1fr 1fr; }
 }
 
 @media (prefers-reduced-motion: reduce) {
