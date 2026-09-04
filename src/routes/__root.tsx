@@ -79,7 +79,7 @@ function AnalyticsConsent() {
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
-    if (posthog.has_opted_in_capturing() || posthog.has_opted_out_capturing()) {
+    if (posthog.get_explicit_consent_status() !== "pending") {
       setIsVisible(false);
     }
 
