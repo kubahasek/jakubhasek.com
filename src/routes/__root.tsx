@@ -1,33 +1,25 @@
-import {
-  createRootRoute,
-  HeadContent,
-  Outlet,
-  Scripts,
-} from "@tanstack/react-router";
-import { ThemeProvider } from "@/components/theme-provider";
-import { Navigation } from "@/components/navigation";
+import { PostHogProvider } from "@posthog/react";
+import { createRootRoute, HeadContent, Outlet, Scripts } from "@tanstack/react-router";
+import type { ReactNode } from "react";
 import appCss from "@/globals.css?url";
 
 export const Route = createRootRoute({
   head: () => ({
     meta: [
-      { title: "Terminal Portfolio" },
+      { title: "Jakub Hašek — Full-Stack Developer" },
       {
         name: "description",
-        content: "Personal landing page with terminal UI",
+        content: "Jakub Hašek builds thoughtful, fast, and useful digital products.",
       },
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { name: "theme-color", content: "#ff6b00" },
     ],
     links: [
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
-      {
-        rel: "stylesheet",
-        href: "https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-mono/style.min.css",
-      },
+      { rel: "stylesheet", href: appCss },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" },
     ],
   }),
   component: RootComponent,
@@ -35,21 +27,48 @@ export const Route = createRootRoute({
 
 function RootComponent() {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en">
       <head>
         <HeadContent />
       </head>
       <body>
-        <ThemeProvider>
-          <div className="min-h-screen bg-background font-mono scanline">
-            <Navigation />
-            <main className="pl-0 md:pl-64">
-              <Outlet />
-            </main>
-          </div>
-        </ThemeProvider>
+        <PostHogRoot>
+          <Outlet />
+        </PostHogRoot>
         <Scripts />
       </body>
     </html>
+  );
+}
+
+function PostHogRoot({ children }: { children: ReactNode }) {
+  const apiKey = import.meta.env.VITE_PUBLIC_POSTHOG_PROJECT_TOKEN;
+  const apiHost = import.meta.env.VITE_PUBLIC_POSTHOG_HOST;
+
+  if (!apiKey || !apiHost) {
+    if (import.meta.env.DEV) {
+      const missingVariable = !apiKey
+        ? "VITE_PUBLIC_POSTHOG_PROJECT_TOKEN"
+        : "VITE_PUBLIC_POSTHOG_HOST";
+      throw new Error(
+        `${missingVariable} variable required by PostHog is missing or un-configured, this causes events to be silently missed. This error stops appearing once ${missingVariable} is configured`,
+      );
+    }
+
+    return children;
+  }
+
+  return (
+    <PostHogProvider
+      apiKey={apiKey}
+      options={{
+        api_host: apiHost,
+        capture_exceptions: true,
+        defaults: "2025-05-24",
+        debug: import.meta.env.DEV,
+      }}
+    >
+      {children}
+    </PostHogProvider>
   );
 }
