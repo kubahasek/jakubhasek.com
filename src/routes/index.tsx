@@ -1,7 +1,7 @@
 import { LanguageSwitcher, useLocale } from "@/components/locale-provider";
 import { createFileRoute } from "@tanstack/react-router";
 import { usePostHog } from "@posthog/react";
-import { Moon, Sun } from "lucide-react";
+import { Mail, Moon, Sun } from "lucide-react";
 import { useTheme } from "@/components/theme-provider";
 import { Projects } from "@/components/projects";
 
@@ -91,7 +91,7 @@ function HomePage() {
               aria-label={t("Email Jakub", "Napsat Jakubovi")}
               onClick={() => captureEmailContact("hero")}
             >
-              <Arrow />
+              <Mail size={24} aria-hidden="true" />
             </a>
           </div>
         </section>

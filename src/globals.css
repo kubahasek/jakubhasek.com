@@ -58,25 +58,26 @@ nav a { padding: 0 16px; display: grid; place-items: center; border-left: 1px so
 nav a:last-child { border-right: 1px solid var(--border); }
 nav a:hover { background: var(--primary-soft); color: var(--accent-text); }
 
-main { padding: 24px; }
+main { display: grid; gap: 72px; padding: 24px; }
+main > section { scroll-margin-top: 80px; }
 .hero, .work, .about, .contact, footer { width: min(1180px, 100%); margin-inline: auto; }
 .hero { min-height: 650px; display: grid; grid-template-rows: auto 1fr auto; border: 1px solid var(--foreground); position: relative; overflow: hidden; }
 .hero::after { content: ""; position: absolute; right: 0; top: 0; width: 38%; height: 100%; opacity: .72; pointer-events: none; background-color: color-mix(in srgb, var(--primary) 18%, var(--background)); background-image: radial-gradient(var(--primary) 1.2px, transparent 1.2px); background-size: 7px 7px; mask-image: linear-gradient(90deg, transparent, #000 55%); }
-.eyebrow { z-index: 1; display: flex; justify-content: space-between; padding: 18px 22px; border-bottom: 1px solid var(--foreground); font: 500 10px "JetBrains Mono", monospace; text-transform: uppercase; letter-spacing: .12em; }
+.eyebrow { z-index: 1; background: color-mix(in srgb, var(--background) 65%, transparent); backdrop-filter: blur(5px); display: flex; justify-content: space-between; padding: 18px 22px; border-bottom: 1px solid var(--foreground); font: 500 10px "JetBrains Mono", monospace; text-transform: uppercase; letter-spacing: .12em; }
 .hero h1 { z-index: 1; align-self: center; margin: 0; padding: 56px 40px; max-width: 960px; font-size: clamp(4rem, 8.5vw, 7.8rem); font-weight: 600; line-height: .86; letter-spacing: -.065em; }
 h1 em, .contact em { color: var(--primary); font-style: normal; }
 .hero-bottom { z-index: 1; display: grid; grid-template-columns: 1fr 88px; border-top: 1px solid var(--foreground); }
 .hero-bottom p { max-width: 690px; margin: 0; padding: 22px; font-size: clamp(16px, 2vw, 22px); line-height: 1.3; letter-spacing: -.025em; }
-.round-link { display: grid; place-items: center; border-left: 1px solid var(--foreground); background: var(--primary); color: var(--on-primary); font-size: 26px; transition: background 160ms ease; }
+.round-link { display: grid; place-items: center; border-left: 1px solid var(--foreground); background: var(--primary); color: var(--on-primary); transition: background 160ms ease; }
 .round-link:hover { background: var(--primary-soft); color: var(--foreground); }
 
-.work { padding-block: 110px; }
+.work { padding: 32px; border: 1px solid var(--foreground); border-top-width: 4px; background: var(--muted); }
 .section-heading { position: relative; display: flex; align-items: end; justify-content: space-between; gap: 24px; padding-bottom: 22px; border-bottom: 1px solid var(--foreground); }
 .section-heading::after { content: ""; position: absolute; right: 0; bottom: -1px; width: min(14rem, 32%); height: 7px; background-image: radial-gradient(var(--primary) 1px, transparent 1px); background-size: 5px 5px; }
 .section-kicker { color: var(--primary); font: 500 10px "JetBrains Mono", monospace; text-transform: uppercase; letter-spacing: .12em; }
 .section-heading h2, .about h2 { margin: 0; font-size: clamp(2.5rem, 6vw, 5rem); font-weight: 600; line-height: .92; letter-spacing: -.055em; }
 .work { scroll-margin-top: 80px; }
-.collaboration { display: grid; grid-template-columns: 1.35fr 1fr; border: 1px solid var(--foreground); border-top: 0; }
+.collaboration { background: var(--background); display: grid; grid-template-columns: 1.35fr 1fr; border: 1px solid var(--foreground); border-top: 0; }
 .collaboration-copy { min-width: 0; min-height: 480px; padding: 30px; display: flex; flex-direction: column; justify-content: space-between; }
 .collaboration-meta { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; font: 500 10px "JetBrains Mono", monospace; text-transform: uppercase; letter-spacing: .06em; }
 .collaboration-status { display: inline-flex; align-items: center; gap: 7px; }
@@ -99,7 +100,7 @@ h1 em, .contact em { color: var(--primary); font-style: normal; }
 .collaboration-link:focus-visible { outline-offset: -5px; outline-color: var(--foreground); }
 .collaboration-link > span:last-child { font-size: 22px; }
 
-.personal-project { display: grid; grid-template-columns: 1.35fr 1fr; margin-top: 24px; border: 1px solid var(--foreground); background: var(--muted); }
+.personal-project { display: grid; grid-template-columns: 1.35fr 1fr; margin-top: 32px; border: 1px solid var(--foreground); background: var(--background); }
 .personal-project-intro, .personal-project-details { min-width: 0; padding: 30px; }
 .personal-project h3 { margin: 36px 0 12px; font-size: clamp(3.5rem, 6vw, 5rem); font-weight: 600; line-height: .95; letter-spacing: -.055em; }
 .personal-project h3 span { color: var(--primary); }
@@ -109,9 +110,9 @@ h1 em, .contact em { color: var(--primary); font-style: normal; }
 .personal-project-note { padding-top: 20px; border-top: 1px solid var(--border); }
 .personal-project-note p { margin: 10px 0 0; color: var(--muted-foreground); font-size: 14px; line-height: 1.5; }
 
-.about { display: grid; grid-template-columns: .65fr 1.7fr 1fr; border: 1px solid var(--foreground); }
+.about { display: grid; grid-template-columns: .65fr 1.7fr 1fr; border: 1px solid var(--foreground); background: var(--primary-soft); }
 .about-label, .about-copy, .capabilities { padding: 28px; }
-.about-label { display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid var(--foreground); color: var(--primary); font: 500 10px "JetBrains Mono", monospace; text-transform: uppercase; }
+.about-label { display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid var(--foreground); background: var(--primary); color: var(--on-primary); font: 500 10px "JetBrains Mono", monospace; text-transform: uppercase; }
 .asterisk { font-size: 42px; }
 .about-copy { min-height: 440px; border-right: 1px solid var(--foreground); }
 .about-copy p { max-width: 650px; color: var(--muted-foreground); font-size: clamp(16px, 1.8vw, 21px); line-height: 1.4; }
@@ -120,7 +121,7 @@ h1 em, .contact em { color: var(--primary); font-style: normal; }
 .capabilities li:last-child { border-bottom: 1px solid var(--border); }
 .capabilities span { color: var(--primary); font: 500 10px "JetBrains Mono", monospace; }
 
-.contact { min-height: 520px; margin-top: 110px; display: flex; flex-direction: column; border: 1px solid var(--foreground); padding: 34px 40px; position: relative; overflow: hidden; }
+.contact { --foreground: #f3eee7; --background: #211b16; --primary: #fb9656; --primary-soft: #35251c; color: var(--foreground); background: var(--background); min-height: 520px; display: flex; flex-direction: column; border: 1px solid var(--foreground); border-top: 4px solid var(--primary); padding: 34px 40px; position: relative; overflow: hidden; }
 .contact::after { content: ""; position: absolute; right: 0; bottom: 0; width: 50%; height: 42%; background-color: color-mix(in srgb, var(--primary) 15%, var(--background)); background-image: radial-gradient(var(--primary) 1.15px, transparent 1.15px); background-size: 6px 6px; mask-image: linear-gradient(90deg, transparent, #000 40%); }
 .contact h2 { z-index: 1; margin: auto 0; font-size: clamp(5rem, 12vw, 10rem); font-weight: 600; line-height: .75; letter-spacing: -.075em; }
 .email-link { z-index: 1; align-self: flex-start; padding: 13px 16px; border: 1px solid var(--foreground); background: var(--primary); color: var(--on-primary); font: 500 clamp(14px, 2vw, 20px) "JetBrains Mono", monospace; }
@@ -152,7 +153,7 @@ footer a:hover, .footer-button:hover { color: var(--primary); }
   .brand-mark { min-width: 48px; border-left: 0; }
   .theme-toggle { width: 44px; }
   nav a { padding: 0 9px; font-size: 8px; }
-  main { padding: 12px; }
+  main { gap: 40px; padding: 12px; }
   .hero { min-height: calc(100svh - 80px); }
   .eyebrow { padding: 14px; }
   .eyebrow span:last-child { display: none; }
@@ -160,7 +161,8 @@ footer a:hover, .footer-button:hover { color: var(--primary); }
   .hero::after { width: 60%; }
   .hero-bottom { grid-template-columns: 1fr 62px; }
   .hero-bottom p { padding: 14px; font-size: 14px; }
-  .work { padding-block: 78px; }
+  .work { padding: 20px 14px; }
+  .personal-project { margin-top: 24px; }
   .section-heading { display: block; }
   .section-heading h2 { margin-top: 18px; }
   .collaboration { grid-template-columns: 1fr; }
@@ -178,7 +180,7 @@ footer a:hover, .footer-button:hover { color: var(--primary); }
   .about-label { min-height: 84px; flex-direction: row; align-items: center; border-right: 0; border-bottom: 1px solid var(--foreground); }
   .about-copy { min-height: auto; border-right: 0; border-bottom: 1px solid var(--foreground); }
   .about-label, .about-copy, .capabilities { padding: 20px; }
-  .contact { min-height: 440px; margin-top: 78px; padding: 24px 18px; }
+  .contact { min-height: 440px; padding: 24px 18px; }
   .contact h2 { font-size: clamp(4.6rem, 23vw, 7rem); }
   .email-link { font-size: 12px; }
   footer { flex-direction: column; }
