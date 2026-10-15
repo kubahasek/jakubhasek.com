@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { usePostHog } from "@posthog/react";
+import { Moon, Sun } from "lucide-react";
+import { useTheme } from "@/components/theme-provider";
 import { Projects } from "@/components/projects";
 
 export const Route = createFileRoute("/")({ component: HomePage });
@@ -10,6 +12,7 @@ function Arrow() {
 
 function HomePage() {
   const posthog = usePostHog();
+  const { theme, toggleTheme } = useTheme();
 
   const captureEmailContact = (placement: "hero" | "contact") => {
     posthog?.capture("contact_email_initiated", { placement });
@@ -26,11 +29,24 @@ function HomePage() {
           <span className="brand-mark">JH</span>
           <span className="brand-copy">Jakub Hašek<br />Full-stack developer</span>
         </a>
-        <nav aria-label="Main navigation">
-          <a href="#work">Work</a>
-          <a href="#about">About</a>
-          <a href="#contact">Contact</a>
-        </nav>
+        <div className="topbar-actions">
+          <nav aria-label="Main navigation">
+            <a href="#work">Work</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+          </nav>
+          <button
+            className="theme-toggle"
+            type="button"
+            onClick={toggleTheme}
+            aria-label="Dark mode"
+            aria-pressed={theme === "dark"}
+            title="Toggle light / dark mode"
+          >
+            <Moon className="theme-icon-moon" size={16} aria-hidden="true" />
+            <Sun className="theme-icon-sun" size={16} aria-hidden="true" />
+          </button>
+        </div>
       </header>
 
       <main id="top">

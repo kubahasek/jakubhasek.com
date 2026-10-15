@@ -9,35 +9,44 @@ type ThemeContextType = {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 
+// Run before first paint so SSR pages use the saved or system theme immediately.
+export const themeInitScript = `(() => {
+  let theme;
+  try { theme = localStorage.getItem('theme'); } catch {}
+  if (theme !== 'light' && theme !== 'dark') {
+    theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+  document.documentElement.classList.toggle('dark', theme === 'dark');
+})();`
+
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>('dark')
-  const [mounted, setMounted] = useState(false)
+  const [theme, setTheme] = useState<Theme>('light')
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') as Theme | null
-    if (savedTheme) {
-      setTheme(savedTheme)
-    } else {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-      setTheme(prefersDark ? 'dark' : 'light')
+    const system = window.matchMedia('(prefers-color-scheme: dark)')
+    const syncTheme = () => {
+      let saved: string | null = null
+      try { saved = localStorage.getItem('theme') } catch {}
+      const next = saved === 'light' || saved === 'dark'
+        ? saved
+        : system.matches ? 'dark' : 'light'
+      document.documentElement.classList.toggle('dark', next === 'dark')
+      setTheme(next)
     }
-    setMounted(true)
+    syncTheme()
+    system.addEventListener('change', syncTheme)
+    window.addEventListener('storage', syncTheme)
+    return () => {
+      system.removeEventListener('change', syncTheme)
+      window.removeEventListener('storage', syncTheme)
+    }
   }, [])
 
-  useEffect(() => {
-    const root = document.documentElement
-    if (theme === 'dark') {
-      root.classList.add('dark')
-    } else {
-      root.classList.remove('dark')
-    }
-    if (mounted) {
-      localStorage.setItem('theme', theme)
-    }
-  }, [theme, mounted])
-
   const toggleTheme = () => {
-    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'))
+    const next = document.documentElement.classList.contains('dark') ? 'light' : 'dark'
+    document.documentElement.classList.toggle('dark', next === 'dark')
+    setTheme(next)
+    try { localStorage.setItem('theme', next) } catch {}
   }
 
   return <ThemeContext.Provider value={{ theme, toggleTheme }}>{children}</ThemeContext.Provider>

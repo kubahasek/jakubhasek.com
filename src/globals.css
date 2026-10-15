@@ -3,7 +3,11 @@
 :root {
   --background: #ffffff;
   --foreground: #111111;
+  color-scheme: light;
   --primary: #fb7f33;
+  --on-primary: #211208;
+  --accent-text: #9c3c08;
+  --topbar-background: var(--topbar-background);
   --primary-soft: #fff0e7;
   --muted: #f5f3ef;
   --muted-foreground: #706b63;
@@ -14,38 +18,57 @@
   font-synthesis: none;
 }
 
+.dark {
+  color-scheme: dark;
+  --background: #171614;
+  --foreground: #f3eee7;
+  --primary: #fb9656;
+  --primary-soft: #35251c;
+  --muted: #211f1c;
+  --muted-foreground: #b4aca0;
+  --border: #4c463f;
+  --accent-text: #ffb27e;
+  --topbar-background: rgb(23 22 20 / 94%);
+}
+
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body { margin: 0; min-width: 320px; background: var(--background); }
 a { color: inherit; text-decoration: none; }
 ::selection { background: var(--primary); color: #321506; }
-a:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
 
 .site-shell { min-height: 100vh; }
 .topbar {
   position: sticky; top: 0; z-index: 20; height: 56px; padding: 0 max(1rem, calc((100vw - 1180px) / 2));
   display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--foreground);
-  background: rgb(255 255 255 / 94%); backdrop-filter: blur(12px);
+  background: var(--topbar-background); backdrop-filter: blur(12px);
 }
 .brand { height: 100%; display: flex; align-items: center; gap: 12px; }
 .brand-mark { height: 100%; min-width: 64px; display: grid; place-items: center; border-inline: 1px solid var(--foreground); font: 600 12px "JetBrains Mono", monospace; letter-spacing: .08em; }
 .brand-copy { font: 500 9px/1.35 "JetBrains Mono", monospace; text-transform: uppercase; letter-spacing: .08em; }
+.topbar-actions { display: flex; align-self: stretch; }
+.theme-toggle { width: 56px; padding: 0; display: grid; place-items: center; flex-shrink: 0; border: 0; border-right: 1px solid var(--border); background: transparent; color: var(--foreground); cursor: pointer; }
+.theme-toggle:hover { background: var(--primary-soft); color: var(--accent-text); }
+.theme-toggle:focus-visible { outline-offset: -5px; }
+.theme-icon-sun, .dark .theme-icon-moon { display: none; }
+.dark .theme-icon-sun { display: block; }
 nav { display: flex; align-self: stretch; }
 nav a { padding: 0 16px; display: grid; place-items: center; border-left: 1px solid var(--border); font: 500 9px "JetBrains Mono", monospace; text-transform: uppercase; letter-spacing: .08em; transition: background 160ms ease, color 160ms ease; }
 nav a:last-child { border-right: 1px solid var(--border); }
-nav a:hover { background: var(--primary-soft); color: #9c3c08; }
+nav a:hover { background: var(--primary-soft); color: var(--accent-text); }
 
 main { padding: 24px; }
 .hero, .work, .about, .contact, footer { width: min(1180px, 100%); margin-inline: auto; }
 .hero { min-height: 650px; display: grid; grid-template-rows: auto 1fr auto; border: 1px solid var(--foreground); position: relative; overflow: hidden; }
-.hero::after { content: ""; position: absolute; right: 0; top: 0; width: 38%; height: 100%; opacity: .72; pointer-events: none; background-color: color-mix(in srgb, var(--primary) 18%, white); background-image: radial-gradient(var(--primary) 1.2px, transparent 1.2px); background-size: 7px 7px; mask-image: linear-gradient(90deg, transparent, #000 55%); }
+.hero::after { content: ""; position: absolute; right: 0; top: 0; width: 38%; height: 100%; opacity: .72; pointer-events: none; background-color: color-mix(in srgb, var(--primary) 18%, var(--background)); background-image: radial-gradient(var(--primary) 1.2px, transparent 1.2px); background-size: 7px 7px; mask-image: linear-gradient(90deg, transparent, #000 55%); }
 .eyebrow { z-index: 1; display: flex; justify-content: space-between; padding: 18px 22px; border-bottom: 1px solid var(--foreground); font: 500 10px "JetBrains Mono", monospace; text-transform: uppercase; letter-spacing: .12em; }
 .hero h1 { z-index: 1; align-self: center; margin: 0; padding: 56px 40px; max-width: 960px; font-size: clamp(4rem, 8.5vw, 7.8rem); font-weight: 600; line-height: .86; letter-spacing: -.065em; }
 h1 em, .contact em { color: var(--primary); font-style: normal; }
 .hero-bottom { z-index: 1; display: grid; grid-template-columns: 1fr 88px; border-top: 1px solid var(--foreground); }
 .hero-bottom p { max-width: 690px; margin: 0; padding: 22px; font-size: clamp(16px, 2vw, 22px); line-height: 1.3; letter-spacing: -.025em; }
-.round-link { display: grid; place-items: center; border-left: 1px solid var(--foreground); background: var(--primary); font-size: 26px; transition: background 160ms ease; }
-.round-link:hover { background: var(--primary-soft); }
+.round-link { display: grid; place-items: center; border-left: 1px solid var(--foreground); background: var(--primary); color: var(--on-primary); font-size: 26px; transition: background 160ms ease; }
+.round-link:hover { background: var(--primary-soft); color: var(--foreground); }
 
 .work { padding-block: 110px; }
 .section-heading { position: relative; display: flex; align-items: end; justify-content: space-between; gap: 24px; padding-bottom: 22px; border-bottom: 1px solid var(--foreground); }
@@ -65,14 +88,14 @@ h1 em, .contact em { color: var(--primary); font-style: normal; }
 .collaboration-scope { display: flex; flex-wrap: wrap; gap: 8px; }
 .collaboration-scope span { padding: 7px 10px; border: 1px solid var(--border); font: 500 10px "JetBrains Mono", monospace; text-transform: uppercase; }
 .collaboration-details { min-width: 0; display: flex; flex-direction: column; border-left: 1px solid var(--foreground); background: var(--primary-soft); }
-.collaboration-wordmark { flex: 1; min-height: 220px; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 32px; background: var(--primary); }
+.collaboration-wordmark { flex: 1; min-height: 220px; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 32px; background: var(--primary); color: var(--on-primary); }
 .collaboration-wordmark span:first-child { font-size: clamp(4rem, 9vw, 8rem); font-weight: 600; line-height: 1; letter-spacing: -.07em; }
 .collaboration-wordmark span:last-child { padding-left: .35em; font: 500 12px "JetBrains Mono", monospace; text-transform: uppercase; letter-spacing: .35em; }
 .collaboration-note { padding: 28px 30px; border-top: 1px solid var(--foreground); }
 .collaboration-note-label { font: 500 10px "JetBrains Mono", monospace; text-transform: uppercase; letter-spacing: .08em; }
 .collaboration-note p { max-width: 350px; margin: 12px 0 0; font-size: 14px; line-height: 1.5; }
 .collaboration-link { min-height: 60px; padding: 18px 30px; display: flex; justify-content: space-between; align-items: center; gap: 16px; border-top: 1px solid var(--foreground); font: 500 11px "JetBrains Mono", monospace; }
-.collaboration-link:hover { background: var(--primary); }
+.collaboration-link:hover { background: var(--primary); color: var(--on-primary); }
 .collaboration-link:focus-visible { outline-offset: -5px; outline-color: var(--foreground); }
 .collaboration-link > span:last-child { font-size: 22px; }
 
@@ -98,11 +121,11 @@ h1 em, .contact em { color: var(--primary); font-style: normal; }
 .capabilities span { color: var(--primary); font: 500 10px "JetBrains Mono", monospace; }
 
 .contact { min-height: 520px; margin-top: 110px; display: flex; flex-direction: column; border: 1px solid var(--foreground); padding: 34px 40px; position: relative; overflow: hidden; }
-.contact::after { content: ""; position: absolute; right: 0; bottom: 0; width: 50%; height: 42%; background-color: color-mix(in srgb, var(--primary) 15%, white); background-image: radial-gradient(var(--primary) 1.15px, transparent 1.15px); background-size: 6px 6px; mask-image: linear-gradient(90deg, transparent, #000 40%); }
+.contact::after { content: ""; position: absolute; right: 0; bottom: 0; width: 50%; height: 42%; background-color: color-mix(in srgb, var(--primary) 15%, var(--background)); background-image: radial-gradient(var(--primary) 1.15px, transparent 1.15px); background-size: 6px 6px; mask-image: linear-gradient(90deg, transparent, #000 40%); }
 .contact h2 { z-index: 1; margin: auto 0; font-size: clamp(5rem, 12vw, 10rem); font-weight: 600; line-height: .75; letter-spacing: -.075em; }
-.email-link { z-index: 1; align-self: flex-start; padding: 13px 16px; border: 1px solid var(--foreground); background: var(--primary); font: 500 clamp(14px, 2vw, 20px) "JetBrains Mono", monospace; }
+.email-link { z-index: 1; align-self: flex-start; padding: 13px 16px; border: 1px solid var(--foreground); background: var(--primary); color: var(--on-primary); font: 500 clamp(14px, 2vw, 20px) "JetBrains Mono", monospace; }
 .email-link span { margin-left: 30px; }
-.email-link:hover { background: var(--primary-soft); }
+.email-link:hover { background: var(--primary-soft); color: var(--foreground); }
 footer { margin-top: 0; padding: 20px 0; display: flex; justify-content: space-between; gap: 20px; font: 500 9px "JetBrains Mono", monospace; text-transform: uppercase; }
 footer div { display: flex; gap: 24px; }
 footer a:hover, .footer-button:hover { color: var(--primary); }
@@ -119,14 +142,15 @@ footer a:hover, .footer-button:hover { color: var(--primary); }
 .consent-actions { display: flex; gap: 8px; }
 .consent-actions button { padding: 10px 12px; border: 1px solid var(--foreground); background: var(--background); color: var(--foreground); cursor: pointer; font: 500 9px "JetBrains Mono", monospace; text-transform: uppercase; letter-spacing: .04em; }
 .consent-actions button:hover { background: var(--primary-soft); }
-.consent-actions .consent-accept { background: var(--primary); }
-.consent-actions .consent-accept:hover { background: var(--primary-soft); }
+.consent-actions .consent-accept { background: var(--primary); color: var(--on-primary); }
+.consent-actions .consent-accept:hover { background: var(--primary-soft); color: var(--foreground); }
 .consent-actions button:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
 
 @media (max-width: 760px) {
   .topbar { padding-inline: 12px; }
   .brand-copy { display: none; }
   .brand-mark { min-width: 48px; border-left: 0; }
+  .theme-toggle { width: 44px; }
   nav a { padding: 0 9px; font-size: 8px; }
   main { padding: 12px; }
   .hero { min-height: calc(100svh - 80px); }

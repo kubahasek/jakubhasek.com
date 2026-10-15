@@ -1,6 +1,7 @@
 import { PostHogProvider, usePostHog } from "@posthog/react";
 import { createRootRoute, HeadContent, Outlet, Scripts } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
+import { ThemeProvider, themeInitScript } from "@/components/theme-provider";
 import "@/globals.css";
 
 export const Route = createRootRoute({
@@ -26,14 +27,17 @@ export const Route = createRootRoute({
 
 function RootComponent() {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <HeadContent />
       </head>
       <body>
-        <PostHogRoot>
-          <Outlet />
-        </PostHogRoot>
+        <ThemeProvider>
+          <PostHogRoot>
+            <Outlet />
+          </PostHogRoot>
+        </ThemeProvider>
         <Scripts />
       </body>
     </html>
