@@ -30,7 +30,7 @@ export const Route = createRootRoute({
         name: "description",
         content:
           match.context.locale === "cs"
-            ? "Jakub Hašek vyvíjí promyšlené, rychlé a užitečné digitální produkty."
+            ? "Jsem Jakub Hašek, full-stack vývojář. Pomůžu vám s návrhem a vývojem webové aplikace od prvního nápadu po spuštění."
             : "Jakub Hašek builds thoughtful, fast, and useful digital products.",
       },
       { charSet: "utf-8" },

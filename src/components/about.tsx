@@ -27,20 +27,20 @@ export function About() {
             <p>
               {t(
                 "I'm a full-stack developer with a passion for creating beautiful, functional, and accessible web\n              experiences.",
-                "Jsem full-stack vývojář. Tvořím webové aplikace, které dobře vypadají, fungují a jsou přístupné všem.",
+                "Jsem Jakub, full-stack vývojář. Navrhuji a vyvíjím webové aplikace — od uživatelského rozhraní po logiku na serveru.",
               )}
             </p>
             <p>
               {t(
                 "My expertise spans modern web technologies. I believe in writing clean, maintainable code and following\n              best practices.",
-                "Pracuji s moderními webovými technologiemi. Zakládám si na čistém, udržovatelném kódu a osvědčených postupech.",
+                "Záleží mi na tom, aby se aplikace dobře používala a dala se dál rozvíjet. Píšu přehledný kód a myslím na rychlost i přístupnost.",
               )}
             </p>
           </div>
         </div>
 
         <div className="mb-4 font-mono text-sm text-muted-foreground">
-          {t("Skills & Technologies", "Dovednosti a technologie")}
+          {t("Skills & Technologies", "S čím pracuji")}
         </div>
         <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
           {skills.map((skill) => (

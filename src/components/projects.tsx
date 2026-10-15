@@ -7,7 +7,7 @@ export function Projects() {
         <span className="section-kicker">
           {t("Projects & experience", "Projekty a zkušenosti")}
         </span>
-        <h2 id="work-title">{t("Built to be used.", "Pro skutečný život.")}</h2>
+        <h2 id="work-title">{t("Built to be used.", "Na čem pracuji.")}</h2>
       </div>
 
       <article className="collaboration" aria-labelledby="akip-title">
@@ -15,7 +15,7 @@ export function Projects() {
           <div className="collaboration-meta">
             <span>{t("Current collaboration", "Aktuální spolupráce")}</span>
             <span className="collaboration-status">
-              {t("Ongoing", "Probíhá")}
+              {t("Ongoing", "Průběžně")}
             </span>
           </div>
           <div className="collaboration-intro">
@@ -28,7 +28,7 @@ export function Projects() {
             <p className="collaboration-description">
               {t(
                 "I work with AKIP Solutions as a full-stack developer,\n              contributing across frontend and backend.",
-                "S AKIP Solutions spolupracuji jako full-stack vývojář. Podílím se na vývoji frontendu i backendu.",
+                "V AKIP Solutions se věnuji vývoji webových aplikací. Pracuji na uživatelském rozhraní i na tom, co běží na serveru.",
               )}
             </p>
           </div>
@@ -48,12 +48,12 @@ export function Projects() {
           </div>
           <div className="collaboration-note">
             <span className="collaboration-note-label">
-              {t("Behind the scenes", "Ze zákulisí")}
+              {t("Behind the scenes", "O spolupráci")}
             </span>
             <p>
               {t(
                 "Project details are private. I’m happy to talk about\n              my role and how I approach the work.",
-                "Detaily projektů jsou neveřejné. Rád ale proberu svou roli a přístup k práci.",
+                "Podrobnosti projektů nemohu zveřejnit. Rád vám ale přiblížím, na čem se podílím a jak při vývoji postupuji.",
               )}
             </p>
           </div>
@@ -77,7 +77,7 @@ export function Projects() {
       <article className="personal-project" aria-labelledby="lifeos-title">
         <div className="personal-project-intro">
           <span className="collaboration-note-label">
-            {t("Personal project · Solo", "Vlastní projekt · Solo")}
+            {t("Personal project · Solo", "Vlastní projekt")}
           </span>
           <h3 id="lifeos-title">
             LifeOS<span aria-hidden="true">.</span>
@@ -85,7 +85,7 @@ export function Projects() {
           <p className="personal-project-tagline">
             {t(
               "A little more order. A little more life.",
-              "Trochu víc pořádku. Trochu víc života.",
+              "Přehled o financích i běžném životě.",
             )}
           </p>
           <div
@@ -93,27 +93,24 @@ export function Projects() {
             aria-label={t("Project focus", "Zaměření projektu")}
           >
             <span>{t("Personal finance", "Osobní finance")}</span>
-            <span>{t("Life management", "Organizace života")}</span>
+            <span>{t("Life management", "Každodenní přehled")}</span>
           </div>
         </div>
         <div className="personal-project-details">
           <p className="personal-project-description">
             {t(
               "A personal app I’m building to manage my finances and other\n            parts of everyday life. Designed, built, and used by me.",
-              "Vlastní aplikace pro správu financí a dalších oblastí každodenního života. Sám ji navrhuji, vyvíjím i používám.",
+              "LifeOS si stavím pro sebe. Pomáhá mi mít přehled o osobních financích a dalších věcech, které v běžném životě řeším. Od návrhu po vývoj je to moje práce.",
             )}
           </p>
           <div className="personal-project-note">
             <span className="collaboration-note-label">
-              {t(
-                "Built for an audience of one",
-                "Vytvořeno pro jednoho uživatele",
-              )}
+              {t("Built for an audience of one", "Pro vlastní potřebu")}
             </span>
             <p>
               {t(
                 "My own tool for daily life, built for personal use.",
-                "Můj vlastní nástroj pro každodenní život a osobní použití.",
+                "Aplikaci rozvíjím podle toho, co sám při používání potřebuji.",
               )}
             </p>
           </div>

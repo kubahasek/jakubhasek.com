@@ -17,13 +17,13 @@ export function Contact() {
             <p>
               {t(
                 "Let's work together on your next project.",
-                "Pojďme společně vytvořit váš další projekt.",
+                "Máte nápad na aplikaci nebo hledáte vývojáře do týmu?",
               )}
             </p>
             <p>
               {t(
                 "I'm always interested in hearing about new opportunities and collaborations.",
-                "Rád si poslechnu nové nápady a možnosti spolupráce.",
+                "Napište mi, co řešíte. Rád s vámi proberu, jak bych mohl pomoct.",
               )}
             </p>
           </div>

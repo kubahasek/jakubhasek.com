@@ -66,21 +66,23 @@ function HomePage() {
       <main id="top">
         <section className="hero" aria-labelledby="intro-title">
           <div className="eyebrow">
-            <span>{t("Independent developer", "Nezávislý vývojář")}</span>
-            <span>{t("Prague · Worldwide", "Praha · Celý svět")}</span>
+            <span>{t("Independent developer", "Vývojář na volné noze")}</span>
+            <span>
+              {t("Prague · Worldwide", "Praha · Spolupráce na dálku")}
+            </span>
           </div>
           <h1 id="intro-title">
-            {t("I turn complex", "Měním složité")}
+            {t("I turn complex", "Od nápadu")}
             <br />
-            {t("ideas into", "nápady v")} <em>{t("clear", "jasné")}</em>
+            {t("ideas into", "k")} <em>{t("clear", "hotové")}</em>
             <br />
-            {t("digital products.", "digitální produkty.")}
+            {t("digital products.", "aplikaci.")}
           </h1>
           <div className="hero-bottom">
             <p>
               {t(
                 "I’m Jakub, a full-stack developer building thoughtful, fast, and useful experiences from first sketch to production.",
-                "Jsem Jakub, full-stack vývojář. Tvořím promyšlené, rychlé a užitečné aplikace od prvního náčrtu po spuštění.",
+                "Jsem Jakub, full-stack vývojář. Pomůžu vám promyslet, navrhnout a postavit webovou aplikaci — od prvního nápadu po spuštění.",
               )}
             </p>
             <a
@@ -105,26 +107,26 @@ function HomePage() {
             <h2 id="about-title">
               {t(
                 "Good software should feel obvious.",
-                "Dobrý software se používá přirozeně.",
+                "Software má lidem usnadnit práci.",
               )}
             </h2>
             <p>
               {t(
                 "I work across product thinking, interface design, and engineering. That range helps me remove handoffs, keep the original idea intact, and ship with care.",
-                "Propojuji produktové myšlení, návrh rozhraní a vývoj. Díky tomu ubývá předávání práce, původní myšlenka se neztrácí a výsledek drží pohromadě.",
+                "Zajímá mě, co má aplikace řešit i jak se bude používat. Věnuji se návrhu rozhraní i samotnému vývoji, aby vše fungovalo jako celek.",
               )}
             </p>
             <p>
               {t(
                 "My tools change. The goal stays the same: make something people understand, trust, and enjoy using.",
-                "Nástroje se mění. Cíl zůstává: tvořit věci, kterým lidé rozumí, důvěřují a rádi je používají.",
+                "Záleží mi na přehledném ovládání, rychlosti a kódu, na kterém se dá dál stavět. Technologie vybírám podle toho, co projekt potřebuje.",
               )}
             </p>
           </div>
           <ul className="capabilities">
             <li>
               <span>01</span>
-              {t("Product engineering", "Produktový vývoj")}
+              {t("Product engineering", "Vývoj produktů")}
             </li>
             <li>
               <span>02</span>
@@ -132,7 +134,7 @@ function HomePage() {
             </li>
             <li>
               <span>03</span>
-              {t("Design systems", "Design systémy")}
+              {t("Design systems", "Systémy UI komponent")}
             </li>
             <li>
               <span>04</span>
@@ -147,12 +149,12 @@ function HomePage() {
           aria-labelledby="contact-title"
         >
           <p className="section-kicker">
-            {t("Have a project in mind?", "Máte nápad na projekt?")}
+            {t("Have a project in mind?", "Plánujete webovou aplikaci?")}
           </p>
           <h2 id="contact-title">
             {t("Let’s make it", "Pojďme to")}
             <br />
-            <em>{t("real.", "vytvořit.")}</em>
+            <em>{t("real.", "probrat.")}</em>
           </h2>
           <a
             className="email-link"

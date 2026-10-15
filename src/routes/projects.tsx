@@ -14,7 +14,7 @@ export const Route = createFileRoute("/projects")({
         name: "description",
         content:
           match.context.locale === "cs"
-            ? "Projekty Jakuba Haška: spolupráce s AKIP Solutions a vlastní aplikace LifeOS pro osobní finance a organizaci života."
+            ? "Na čem pracuji: vývoj webových aplikací v AKIP Solutions a vlastní aplikace LifeOS pro přehled o financích a běžném životě."
             : "Jakub Hašek’s full-stack work with AKIP Solutions and LifeOS, a solo project for personal finance and life management.",
       },
     ],

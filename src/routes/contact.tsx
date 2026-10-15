@@ -14,7 +14,7 @@ export const Route = createFileRoute("/contact")({
         name: "description",
         content:
           match.context.locale === "cs"
-            ? "Kontaktujte Jakuba Haška ohledně spolupráce nebo nového projektu."
+            ? "Plánujete webovou aplikaci nebo hledáte vývojáře do týmu? Napište mi a probereme možnosti spolupráce."
             : "Get in touch with Jakub Hašek for collaboration opportunities, project inquiries, or just to say hello.",
       },
     ],

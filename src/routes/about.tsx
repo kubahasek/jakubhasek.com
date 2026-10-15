@@ -14,7 +14,7 @@ export const Route = createFileRoute("/about")({
         name: "description",
         content:
           match.context.locale === "cs"
-            ? "Jakub Hašek — full-stack vývojář se zájmem o kvalitní webové aplikace."
+            ? "Jsem Jakub Hašek. Věnuji se návrhu a vývoji webových aplikací, od uživatelského rozhraní po logiku na serveru."
             : "Learn more about Jakub Hašek, a Full-Stack Developer passionate about creating exceptional web experiences.",
       },
     ],
