@@ -190,3 +190,16 @@ footer a:hover, .footer-button:hover { color: var(--primary); }
   html { scroll-behavior: auto; }
   *, *::before, *::after { transition-duration: .01ms !important; }
 }
+
+.language-switcher { display: flex; align-items: center; gap: 2px; padding-inline: 6px; border-right: 1px solid var(--border); }
+.language-switcher button { min-width: 36px; min-height: 44px; padding: 0 5px; border: 0; background: transparent; color: var(--muted-foreground); font: 500 10px "JetBrains Mono", monospace; cursor: pointer; }
+.language-switcher button[aria-pressed="true"] { color: var(--accent-text); text-decoration: underline; text-underline-offset: 4px; }
+.language-switcher button:hover { background: var(--primary-soft); }
+.secondary-language-switcher { position: fixed; right: 12px; top: 6px; z-index: 30; border: 1px solid var(--border); background: var(--background); }
+html[lang="cs"] .hero h1 { font-size: clamp(3rem, 7.4vw, 6.8rem); }
+@media (max-width: 760px) {
+  .language-switcher { padding-inline: 2px; gap: 0; }
+  .language-switcher button { min-width: 30px; }
+  html[lang="cs"] .hero h1 { font-size: clamp(2.3rem, 10.8vw, 5rem); line-height: .95; }
+  .topbar nav a { padding-inline: 7px; }
+}

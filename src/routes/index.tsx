@@ -1,3 +1,4 @@
+import { LanguageSwitcher, useLocale } from "@/components/locale-provider";
 import { createFileRoute } from "@tanstack/react-router";
 import { usePostHog } from "@posthog/react";
 import { Moon, Sun } from "lucide-react";
@@ -11,6 +12,7 @@ function Arrow() {
 }
 
 function HomePage() {
+  const { t } = useLocale();
   const posthog = usePostHog();
   const { theme, toggleTheme } = useTheme();
 
@@ -25,23 +27,35 @@ function HomePage() {
   return (
     <div className="site-shell">
       <header className="topbar">
-        <a className="brand" href="#top" aria-label="Jakub Hašek, back to top">
+        <a
+          className="brand"
+          href="#top"
+          aria-label={t("Jakub Hašek, back to top", "Jakub Hašek, zpět nahoru")}
+        >
           <span className="brand-mark">JH</span>
-          <span className="brand-copy">Jakub Hašek<br />Full-stack developer</span>
+          <span className="brand-copy">
+            Jakub Hašek
+            <br />
+            {t("Full-stack developer", "Full-stack vývojář")}
+          </span>
         </a>
         <div className="topbar-actions">
-          <nav aria-label="Main navigation">
-            <a href="#work">Work</a>
-            <a href="#about">About</a>
-            <a href="#contact">Contact</a>
+          <nav aria-label={t("Main navigation", "Hlavní navigace")}>
+            <a href="#work">{t("Work", "Projekty")}</a>
+            <a href="#about">{t("About", "O mně")}</a>
+            <a href="#contact">{t("Contact", "Kontakt")}</a>
           </nav>
+          <LanguageSwitcher />
           <button
             className="theme-toggle"
             type="button"
             onClick={toggleTheme}
-            aria-label="Dark mode"
+            aria-label={t("Dark mode", "Tmavý režim")}
             aria-pressed={theme === "dark"}
-            title="Toggle light / dark mode"
+            title={t(
+              "Toggle light / dark mode",
+              "Přepnout světlý / tmavý režim",
+            )}
           >
             <Moon className="theme-icon-moon" size={16} aria-hidden="true" />
             <Sun className="theme-icon-sun" size={16} aria-hidden="true" />
@@ -51,14 +65,28 @@ function HomePage() {
 
       <main id="top">
         <section className="hero" aria-labelledby="intro-title">
-          <div className="eyebrow"><span>Independent developer</span><span>Prague · Worldwide</span></div>
-          <h1 id="intro-title">I turn complex<br />ideas into <em>clear</em><br />digital products.</h1>
+          <div className="eyebrow">
+            <span>{t("Independent developer", "Nezávislý vývojář")}</span>
+            <span>{t("Prague · Worldwide", "Praha · Celý svět")}</span>
+          </div>
+          <h1 id="intro-title">
+            {t("I turn complex", "Měním složité")}
+            <br />
+            {t("ideas into", "nápady v")} <em>{t("clear", "jasné")}</em>
+            <br />
+            {t("digital products.", "digitální produkty.")}
+          </h1>
           <div className="hero-bottom">
-            <p>I’m Jakub, a full-stack developer building thoughtful, fast, and useful experiences from first sketch to production.</p>
+            <p>
+              {t(
+                "I’m Jakub, a full-stack developer building thoughtful, fast, and useful experiences from first sketch to production.",
+                "Jsem Jakub, full-stack vývojář. Tvořím promyšlené, rychlé a užitečné aplikace od prvního náčrtu po spuštění.",
+              )}
+            </p>
             <a
               className="round-link"
               href="mailto:me@jakubhasek.com"
-              aria-label="Email Jakub"
+              aria-label={t("Email Jakub", "Napsat Jakubovi")}
               onClick={() => captureEmailContact("hero")}
             >
               <Arrow />
@@ -69,23 +97,63 @@ function HomePage() {
         <Projects />
 
         <section className="about" id="about" aria-labelledby="about-title">
-          <div className="about-label"><span>About</span><span className="asterisk">✳</span></div>
+          <div className="about-label">
+            <span>{t("About", "O mně")}</span>
+            <span className="asterisk">✳</span>
+          </div>
           <div className="about-copy">
-            <h2 id="about-title">Good software should feel obvious.</h2>
-            <p>I work across product thinking, interface design, and engineering. That range helps me remove handoffs, keep the original idea intact, and ship with care.</p>
-            <p>My tools change. The goal stays the same: make something people understand, trust, and enjoy using.</p>
+            <h2 id="about-title">
+              {t(
+                "Good software should feel obvious.",
+                "Dobrý software se používá přirozeně.",
+              )}
+            </h2>
+            <p>
+              {t(
+                "I work across product thinking, interface design, and engineering. That range helps me remove handoffs, keep the original idea intact, and ship with care.",
+                "Propojuji produktové myšlení, návrh rozhraní a vývoj. Díky tomu ubývá předávání práce, původní myšlenka se neztrácí a výsledek drží pohromadě.",
+              )}
+            </p>
+            <p>
+              {t(
+                "My tools change. The goal stays the same: make something people understand, trust, and enjoy using.",
+                "Nástroje se mění. Cíl zůstává: tvořit věci, kterým lidé rozumí, důvěřují a rádi je používají.",
+              )}
+            </p>
           </div>
           <ul className="capabilities">
-            <li><span>01</span>Product engineering</li>
-            <li><span>02</span>Web applications</li>
-            <li><span>03</span>Design systems</li>
-            <li><span>04</span>Performance & accessibility</li>
+            <li>
+              <span>01</span>
+              {t("Product engineering", "Produktový vývoj")}
+            </li>
+            <li>
+              <span>02</span>
+              {t("Web applications", "Webové aplikace")}
+            </li>
+            <li>
+              <span>03</span>
+              {t("Design systems", "Design systémy")}
+            </li>
+            <li>
+              <span>04</span>
+              {t("Performance & accessibility", "Výkon a přístupnost")}
+            </li>
           </ul>
         </section>
 
-        <section className="contact" id="contact" aria-labelledby="contact-title">
-          <p className="section-kicker">Have a project in mind?</p>
-          <h2 id="contact-title">Let’s make it<br /><em>real.</em></h2>
+        <section
+          className="contact"
+          id="contact"
+          aria-labelledby="contact-title"
+        >
+          <p className="section-kicker">
+            {t("Have a project in mind?", "Máte nápad na projekt?")}
+          </p>
+          <h2 id="contact-title">
+            {t("Let’s make it", "Pojďme to")}
+            <br />
+            <em>{t("real.", "vytvořit.")}</em>
+          </h2>
           <a
             className="email-link"
             href="mailto:me@jakubhasek.com"
@@ -102,9 +170,11 @@ function HomePage() {
           <button
             className="footer-button"
             type="button"
-            onClick={() => window.dispatchEvent(new Event("show-analytics-preferences"))}
+            onClick={() =>
+              window.dispatchEvent(new Event("show-analytics-preferences"))
+            }
           >
-            Analytics settings
+            {t("Analytics settings", "Nastavení analytiky")}
           </button>
           <a
             href="https://github.com/kubahasek"

@@ -1,3 +1,4 @@
+import { useLocale } from "@/components/locale-provider";
 import { createFileRoute } from "@tanstack/react-router";
 import { getPostBySlug } from "@/lib/mdx";
 
@@ -19,6 +20,7 @@ export const Route = createFileRoute("/blog/$slug")({
 });
 
 function BlogPostPage() {
+  const { locale, t } = useLocale();
   const loaderData = Route.useLoaderData() as
     | { post: ReturnType<typeof getPostBySlug> }
     | undefined;
@@ -27,13 +29,15 @@ function BlogPostPage() {
   if (!post) {
     return (
       <div className="mx-auto max-w-4xl px-6 py-24 md:px-16">
-        <h1 className="text-4xl font-bold text-foreground">Post Not Found</h1>
+        <h1 className="text-4xl font-bold text-foreground">
+          {t("Post Not Found", "Článek nenalezen")}
+        </h1>
       </div>
     );
   }
 
   return (
-    <article className="mx-auto max-w-4xl px-6 py-24 md:px-16">
+    <article lang="en" className="mx-auto max-w-4xl px-6 py-24 md:px-16">
       <header className="mb-12">
         <div className="mb-4 font-mono text-sm text-accent">
           $ cat {post.slug}.mdx
@@ -43,14 +47,19 @@ function BlogPostPage() {
         </h1>
         <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
           <time dateTime={post.date}>
-            {new Date(post.date).toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
+            {new Date(post.date).toLocaleDateString(
+              locale === "cs" ? "cs-CZ" : "en-US",
+              {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              },
+            )}
           </time>
           <span>•</span>
-          <span>{post.readTime} read</span>
+          <span>
+            {post.readTime} {t("read", "čtení")}
+          </span>
         </div>
       </header>
       <div

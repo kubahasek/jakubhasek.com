@@ -1,19 +1,25 @@
-import { Link } from '@tanstack/react-router'
-import type { PostMeta } from '@/lib/mdx'
+import { useLocale } from "@/components/locale-provider";
+import { Link } from "@tanstack/react-router";
+import type { PostMeta } from "@/lib/mdx";
 
 interface BlogPostsProps {
-  posts: PostMeta[]
+  posts: PostMeta[];
 }
 
 export function BlogPosts({ posts }: BlogPostsProps) {
+  const { locale, t } = useLocale();
   return (
     <section id="blog" className="min-h-screen px-6 py-24 md:px-16">
       <div className="max-w-6xl">
         <div className="mb-8 font-mono text-sm text-accent">$ cat blog.log</div>
 
-        <h2 className="mb-12 text-3xl font-bold text-foreground md:text-4xl">Blog Posts</h2>
+        <h2 className="mb-12 text-3xl font-bold text-foreground md:text-4xl">
+          {t("Blog Posts", "Články")}
+        </h2>
         {posts.length === 0 && (
-          <p className="text-muted-foreground">Nothing to see here yet...</p>
+          <p className="text-muted-foreground">
+            {t("Nothing to see here yet...", "Zatím tu nejsou žádné články.")}
+          </p>
         )}
 
         <div className="space-y-6">
@@ -26,27 +32,36 @@ export function BlogPosts({ posts }: BlogPostsProps) {
             >
               <div className="mb-3 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
                 <time dateTime={post.date}>
-                  {new Date(post.date).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
+                  {new Date(post.date).toLocaleDateString(
+                    locale === "cs" ? "cs-CZ" : "en-US",
+                    {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    },
+                  )}
                 </time>
                 <span>•</span>
-                <span>{post.readTime} read</span>
+                <span>
+                  {post.readTime} {t("read", "čtení")}
+                </span>
               </div>
 
               <h3 className="mb-3 text-xl font-bold text-foreground group-hover:text-accent md:text-2xl">
                 {post.title}
               </h3>
 
-              <p className="mb-4 leading-relaxed text-muted-foreground">{post.excerpt}</p>
+              <p className="mb-4 leading-relaxed text-muted-foreground">
+                {post.excerpt}
+              </p>
 
-              <div className="font-medium text-accent">Read more →</div>
+              <div className="font-medium text-accent">
+                {t("Read more →", "Číst dál →")}
+              </div>
             </Link>
           ))}
         </div>
       </div>
     </section>
-  )
+  );
 }

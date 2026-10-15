@@ -1,16 +1,37 @@
 import { PostHogProvider, usePostHog } from "@posthog/react";
-import { createRootRoute, HeadContent, Outlet, Scripts } from "@tanstack/react-router";
+import {
+  createRootRoute,
+  HeadContent,
+  Outlet,
+  Scripts,
+  useLocation,
+} from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
 import { ThemeProvider, themeInitScript } from "@/components/theme-provider";
+import {
+  LocaleProvider,
+  LanguageSwitcher,
+  useLocale,
+} from "@/components/locale-provider";
+import { getRequestLocale } from "@/lib/locale.functions";
 import "@/globals.css";
 
 export const Route = createRootRoute({
-  head: () => ({
+  beforeLoad: async () => ({ locale: await getRequestLocale() }),
+  head: ({ match }) => ({
     meta: [
-      { title: "Jakub Hašek — Full-Stack Developer" },
+      {
+        title:
+          match.context.locale === "cs"
+            ? "Jakub Hašek — Full-stack vývojář"
+            : "Jakub Hašek — Full-Stack Developer",
+      },
       {
         name: "description",
-        content: "Jakub Hašek builds thoughtful, fast, and useful digital products.",
+        content:
+          match.context.locale === "cs"
+            ? "Jakub Hašek vyvíjí promyšlené, rychlé a užitečné digitální produkty."
+            : "Jakub Hašek builds thoughtful, fast, and useful digital products.",
       },
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
@@ -18,29 +39,51 @@ export const Route = createRootRoute({
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" },
+      {
+        rel: "preconnect",
+        href: "https://fonts.gstatic.com",
+        crossOrigin: "anonymous",
+      },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap",
+      },
     ],
   }),
   component: RootComponent,
 });
 
 function RootComponent() {
+  const { locale } = Route.useRouteContext();
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <HeadContent />
       </head>
       <body>
-        <ThemeProvider>
-          <PostHogRoot>
-            <Outlet />
-          </PostHogRoot>
-        </ThemeProvider>
+        <LocaleProvider locale={locale}>
+          <ThemeProvider>
+            <PostHogRoot>
+              <Outlet />
+              <SecondaryLanguageSwitcher />
+            </PostHogRoot>
+          </ThemeProvider>
+        </LocaleProvider>
         <Scripts />
       </body>
     </html>
+  );
+}
+
+function SecondaryLanguageSwitcher() {
+  const pathname = useLocation({ select: (location) => location.pathname });
+  // Home owns its header control; other routes share a compact fixed control.
+  if (pathname === "/") return null;
+  return (
+    <div className="secondary-language-switcher">
+      <LanguageSwitcher />
+    </div>
   );
 }
 
@@ -79,6 +122,7 @@ function PostHogRoot({ children }: { children: ReactNode }) {
 }
 
 function AnalyticsConsent() {
+  const { t } = useLocale();
   const posthog = usePostHog();
   const [isVisible, setIsVisible] = useState(true);
 
@@ -89,7 +133,8 @@ function AnalyticsConsent() {
 
     const showPreferences = () => setIsVisible(true);
     window.addEventListener("show-analytics-preferences", showPreferences);
-    return () => window.removeEventListener("show-analytics-preferences", showPreferences);
+    return () =>
+      window.removeEventListener("show-analytics-preferences", showPreferences);
   }, [posthog]);
 
   if (!isVisible) return null;
@@ -104,20 +149,29 @@ function AnalyticsConsent() {
   };
 
   return (
-    <aside className="consent-banner" aria-label="Analytics preferences">
+    <aside
+      className="consent-banner"
+      aria-label={t("Analytics preferences", "Nastavení analytiky")}
+    >
       <div className="consent-copy">
-        <strong>Analytics preferences</strong>
+        <strong>{t("Analytics preferences", "Nastavení analytiky")}</strong>
         <p>
-          Full analytics help me understand how this site is used. If you decline,
-          I’ll only collect anonymous, cookieless page counts.
+          {t(
+            "Full analytics help me understand how this site is used. If you decline, I’ll only collect anonymous, cookieless page counts.",
+            "Analytika mi pomáhá pochopit, jak web používáte. Pokud ji odmítnete, budu sbírat pouze anonymní počty zobrazení bez cookies.",
+          )}
         </p>
       </div>
       <div className="consent-actions">
         <button type="button" onClick={() => chooseAnalytics(false)}>
-          Use cookieless
+          {t("Use cookieless", "Pokračovat bez cookies")}
         </button>
-        <button className="consent-accept" type="button" onClick={() => chooseAnalytics(true)}>
-          Accept analytics
+        <button
+          className="consent-accept"
+          type="button"
+          onClick={() => chooseAnalytics(true)}
+        >
+          {t("Accept analytics", "Povolit analytiku")}
         </button>
       </div>
     </aside>
