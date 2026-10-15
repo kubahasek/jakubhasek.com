@@ -1,32 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { usePostHog } from "@posthog/react";
-
-const projects = [
-  {
-    number: "01",
-    title: "Commerce, made clear",
-    description: "A full-stack storefront with live inventory, payments, and a focused operations dashboard.",
-    tags: ["TypeScript", "Stripe", "PostgreSQL"],
-  },
-  {
-    number: "02",
-    title: "Work, in sync",
-    description: "A collaborative task system built around real-time updates, shared spaces, and useful filters.",
-    tags: ["React", "Node.js", "WebSockets"],
-  },
-  {
-    number: "03",
-    title: "A portfolio, faster",
-    description: "A publishing toolkit that helps developers shape and ship a personal site without the busywork.",
-    tags: ["TanStack", "Cloudflare", "MDX"],
-  },
-  {
-    number: "04",
-    title: "Signals, not noise",
-    description: "An analytics workspace that turns live product data into decisions teams can act on.",
-    tags: ["React", "Data viz", "Redis"],
-  },
-];
+import { Projects } from "@/components/projects";
 
 export const Route = createFileRoute("/")({ component: HomePage });
 
@@ -76,26 +50,7 @@ function HomePage() {
           </div>
         </section>
 
-        <section className="work" id="work" aria-labelledby="work-title">
-          <div className="section-heading">
-            <span className="section-kicker">Selected work</span>
-            <h2 id="work-title">Built to be used.</h2>
-          </div>
-          <div className="project-grid">
-            {projects.map((project) => (
-              <article className="project-card" key={project.number}>
-                <div className="project-top"><span>{project.number}</span><Arrow /></div>
-                <div>
-                  <h3>{project.title}</h3>
-                  <p>{project.description}</p>
-                </div>
-                <ul aria-label="Technologies">
-                  {project.tags.map((tag) => <li key={tag}>{tag}</li>)}
-                </ul>
-              </article>
-            ))}
-          </div>
-        </section>
+        <Projects />
 
         <section className="about" id="about" aria-labelledby="about-title">
           <div className="about-label"><span>About</span><span className="asterisk">✳</span></div>

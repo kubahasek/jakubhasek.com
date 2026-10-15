@@ -1,86 +1,76 @@
-const projects = [
-  {
-    title: "E-Commerce Platform",
-    description: "Full-stack e-commerce solution with real-time inventory, payment processing, and admin dashboard.",
-    tags: ["TypeScript", "Stripe", "PostgreSQL", "Tailwind"],
-    github: "#",
-    demo: "#",
-  },
-  {
-    title: "Task Management App",
-    description: "Collaborative task management tool with real-time updates, team workspaces, and advanced filtering.",
-    tags: ["React", "Node.js", "WebSocket", "MongoDB"],
-    github: "#",
-    demo: "#",
-  },
-  {
-    title: "Portfolio Generator",
-    description: "SaaS platform that helps developers create beautiful portfolio websites with customizable templates.",
-    tags: ["TanStack Start", "Supabase", "Tailwind", "MDX"],
-    github: "#",
-    demo: "#",
-  },
-  {
-    title: "Analytics Dashboard",
-    description: "Real-time analytics dashboard with interactive charts, data visualization, and export capabilities.",
-    tags: ["React", "D3.js", "Express", "Redis"],
-    github: "#",
-    demo: "#",
-  },
-]
-
 export function Projects() {
   return (
-    <section id="projects" className="min-h-screen px-6 py-24 md:px-16">
-      <div className="max-w-6xl">
-        <div className="mb-8 font-mono text-sm text-accent">$ ls projects/</div>
-
-        <h2 className="mb-12 text-3xl font-bold text-foreground md:text-4xl">Featured Projects</h2>
-
-        <div className="grid gap-6 md:grid-cols-2">
-          {projects.map((project) => (
-            <div
-              key={project.title}
-              className="group rounded-lg border border-border bg-card p-6 shadow-sm transition-all hover:border-accent hover:shadow-lg"
-            >
-              <h3 className="mb-3 text-xl font-bold text-foreground group-hover:text-accent md:text-2xl">
-                {project.title}
-              </h3>
-              <p className="mb-4 leading-relaxed text-muted-foreground">{project.description}</p>
-
-              <div className="mb-6 flex flex-wrap gap-2">
-                {project.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="rounded-md bg-accent/10 px-3 py-1 font-mono text-xs font-medium text-accent"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-
-              <div className="flex gap-4 text-sm font-medium">
-                <a
-                  href={project.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted-foreground transition-colors hover:text-accent"
-                >
-                  View Code →
-                </a>
-                <a
-                  href={project.demo}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted-foreground transition-colors hover:text-accent"
-                >
-                  Live Demo →
-                </a>
-              </div>
-            </div>
-          ))}
-        </div>
+    <section className="work" id="work" aria-labelledby="work-title">
+      <div className="section-heading">
+        <span className="section-kicker">Projects & experience</span>
+        <h2 id="work-title">Built to be used.</h2>
       </div>
+
+      <article className="collaboration" aria-labelledby="akip-title">
+        <div className="collaboration-copy">
+          <div className="collaboration-meta">
+            <span>Current collaboration</span>
+            <span className="collaboration-status">Ongoing</span>
+          </div>
+          <div className="collaboration-intro">
+            <p className="collaboration-company">AKIP Solutions</p>
+            <h3 id="akip-title">Full-stack<br />developer.</h3>
+            <p className="collaboration-description">
+              I work with AKIP Solutions as a full-stack developer,
+              contributing across frontend and backend.
+            </p>
+          </div>
+          <div className="collaboration-scope" aria-label="Development focus">
+            <span>Frontend</span>
+            <span>Backend</span>
+          </div>
+        </div>
+
+        <div className="collaboration-details">
+          <div className="collaboration-wordmark" aria-hidden="true">
+            <span>AKIP</span>
+            <span>Solutions</span>
+          </div>
+          <div className="collaboration-note">
+            <span className="collaboration-note-label">Behind the scenes</span>
+            <p>
+              Project details are private. I’m happy to talk about
+              my role and how I approach the work.
+            </p>
+          </div>
+          <a
+            className="collaboration-link"
+            href="https://www.akip.cz/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span>Visit AKIP’s website<span className="sr-only"> (opens in a new tab)</span></span>
+            <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </article>
+
+      <article className="personal-project" aria-labelledby="lifeos-title">
+        <div className="personal-project-intro">
+          <span className="collaboration-note-label">Personal project · Solo</span>
+          <h3 id="lifeos-title">LifeOS<span aria-hidden="true">.</span></h3>
+          <p className="personal-project-tagline">A little more order. A little more life.</p>
+          <div className="collaboration-scope" aria-label="Project focus">
+            <span>Personal finance</span>
+            <span>Life management</span>
+          </div>
+        </div>
+        <div className="personal-project-details">
+          <p className="personal-project-description">
+            A personal app I’m building to manage my finances and other
+            parts of everyday life. Designed, built, and used by me.
+          </p>
+          <div className="personal-project-note">
+            <span className="collaboration-note-label">Built for an audience of one</span>
+            <p>My own tool for daily life, built for personal use.</p>
+          </div>
+        </div>
+      </article>
     </section>
-  )
+  );
 }
