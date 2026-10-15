@@ -35,19 +35,10 @@ export const Route = createRootRoute({
       },
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { name: "theme-color", content: "#ff6b00" },
+      { name: "theme-color", content: "#ff7a1f" },
     ],
     links: [
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      {
-        rel: "preconnect",
-        href: "https://fonts.gstatic.com",
-        crossOrigin: "anonymous",
-      },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap",
-      },
+      { rel: "preload", href: "/fonts/schibsted-800.ttf", as: "font", type: "font/ttf", crossOrigin: "anonymous" },
     ],
   }),
   component: RootComponent,

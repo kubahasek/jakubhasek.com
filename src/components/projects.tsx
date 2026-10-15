@@ -1,121 +1,53 @@
+import { useState } from "react";
 import { useLocale } from "@/components/locale-provider";
+import { ArrowUpRight } from "lucide-react";
+
 export function Projects() {
   const { t } = useLocale();
+  const [active, setActive] = useState("akip");
+
   return (
     <section className="work" id="work" aria-labelledby="work-title">
-      <div className="section-heading">
-        <span className="section-kicker">
-          {t("Projects & experience", "Projekty a zkušenosti")}
-        </span>
-        <h2 id="work-title">{t("Built to be used.", "Na čem pracuji.")}</h2>
+      <h2 id="work-title" data-reveal>{t("Selected work", "Na čem pracuji")}</h2>
+      <div className="work-layout">
+        <div className="project-index" aria-label={t("Select a project", "Vyberte projekt")}>
+          <button type="button" className="project-select" aria-pressed={active === "akip"} aria-controls="project-detail" onClick={() => setActive("akip")} data-reveal>
+            <span>AKIP<br />Solutions</span>
+            <span className="project-kind">{t("Full-stack development", "Full-stack vývoj")}</span>
+          </button>
+          <button type="button" className="project-select" aria-pressed={active === "lifeos"} aria-controls="project-detail" onClick={() => setActive("lifeos")} data-reveal>
+            <span>LifeOS</span>
+            <span className="project-kind">{t("My own application", "Vlastní aplikace")}</span>
+          </button>
+          <p className="project-hint" data-reveal>{t("Choose a name to see what’s behind it.", "Vyberte název a zjistěte víc.")}</p>
+        </div>
+        <div className="project-detail" id="project-detail" aria-live="polite" aria-atomic="true">
+          {active === "akip" ? (
+            <article key="akip" aria-labelledby="akip-title" className="project-story">
+              <h3 id="akip-title">AKIP Solutions</h3>
+              <p className="project-description">{t("I work with AKIP Solutions as a full-stack developer, contributing across frontend and backend.", "V AKIP Solutions se věnuji vývoji webových aplikací. Pracuji na uživatelském rozhraní i na tom, co běží na serveru.")}</p>
+              <dl className="project-facts">
+                <div><dt>{t("Collaboration", "Spolupráce")}</dt><dd>{t("Ongoing", "Průběžně")}</dd></div>
+                <div><dt>{t("My role", "Moje role")}</dt><dd>{t("Full-stack developer", "Full-stack vývojář")}</dd></div>
+              </dl>
+              <p className="project-note">{t("Project details are private. I’m happy to talk about my role and how I approach the work.", "Podrobnosti projektů nemohu zveřejnit. Rád vám ale přiblížím svou roli a přístup k vývoji.")}</p>
+              <a className="text-link" href="https://www.akip.cz/" target="_blank" rel="noopener noreferrer">{t("Visit AKIP’s website", "Navštívit web AKIP")}<ArrowUpRight size={20} aria-hidden="true" /><span className="sr-only">{t(" (new tab)", " (nová karta)")}</span></a>
+            </article>
+          ) : (
+            <article key="lifeos" aria-labelledby="lifeos-title" className="project-story">
+              <h3 id="lifeos-title">LifeOS</h3>
+              <p className="project-description">{t("A personal app I’m building to manage my finances and other parts of everyday life. Designed, built, and used by me.", "LifeOS si stavím pro sebe. Pomáhá mi mít přehled o osobních financích i dalších věcech v běžném životě.")}</p>
+              <dl className="project-facts">
+                <div><dt>{t("My role", "Moje role")}</dt><dd>{t("Design & development", "Návrh i vývoj")}</dd></div>
+                <div><dt>{t("Built for", "Pro koho")}</dt><dd>{t("Personal use", "Vlastní potřebu")}</dd></div>
+              </dl>
+              <p className="project-note">{t("I develop it around what I need day to day. A place to connect personal finance with life management.", "Aplikaci rozvíjím podle toho, co sám potřebuji. Propojuji v ní osobní finance s každodenním přehledem.")}</p>
+              <a className="text-link" href="mailto:me@jakubhasek.com?subject=LifeOS">{t("Ask me about LifeOS", "Zeptat se na LifeOS")}<ArrowUpRight size={20} aria-hidden="true" /></a>
+            </article>
+          )}
+        </div>
       </div>
-
-      <article className="collaboration" aria-labelledby="akip-title">
-        <div className="collaboration-copy">
-          <div className="collaboration-meta">
-            <span>{t("Current collaboration", "Aktuální spolupráce")}</span>
-            <span className="collaboration-status">
-              {t("Ongoing", "Průběžně")}
-            </span>
-          </div>
-          <div className="collaboration-intro">
-            <p className="collaboration-company">AKIP Solutions</p>
-            <h3 id="akip-title">
-              Full-stack
-              <br />
-              {t("developer.", "vývojář.")}
-            </h3>
-            <p className="collaboration-description">
-              {t(
-                "I work with AKIP Solutions as a full-stack developer,\n              contributing across frontend and backend.",
-                "V AKIP Solutions se věnuji vývoji webových aplikací. Pracuji na uživatelském rozhraní i na tom, co běží na serveru.",
-              )}
-            </p>
-          </div>
-          <div
-            className="collaboration-scope"
-            aria-label={t("Development focus", "Zaměření vývoje")}
-          >
-            <span>Frontend</span>
-            <span>Backend</span>
-          </div>
-        </div>
-
-        <div className="collaboration-details">
-          <div className="collaboration-wordmark" aria-hidden="true">
-            <span>AKIP</span>
-            <span>Solutions</span>
-          </div>
-          <div className="collaboration-note">
-            <span className="collaboration-note-label">
-              {t("Behind the scenes", "O spolupráci")}
-            </span>
-            <p>
-              {t(
-                "Project details are private. I’m happy to talk about\n              my role and how I approach the work.",
-                "Podrobnosti projektů nemohu zveřejnit. Rád vám ale přiblížím, na čem se podílím a jak při vývoji postupuji.",
-              )}
-            </p>
-          </div>
-          <a
-            className="collaboration-link"
-            href="https://www.akip.cz/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <span>
-              {t("Visit AKIP’s website", "Navštívit web AKIP")}
-              <span className="sr-only">
-                {t(" (opens in a new tab)", " (otevře se v nové kartě)")}
-              </span>
-            </span>
-            <span aria-hidden="true">↗</span>
-          </a>
-        </div>
-      </article>
-
-      <article className="personal-project" aria-labelledby="lifeos-title">
-        <div className="personal-project-intro">
-          <span className="collaboration-note-label">
-            {t("Personal project · Solo", "Vlastní projekt")}
-          </span>
-          <h3 id="lifeos-title">
-            LifeOS<span aria-hidden="true">.</span>
-          </h3>
-          <p className="personal-project-tagline">
-            {t(
-              "A little more order. A little more life.",
-              "Přehled o financích i běžném životě.",
-            )}
-          </p>
-          <div
-            className="collaboration-scope"
-            aria-label={t("Project focus", "Zaměření projektu")}
-          >
-            <span>{t("Personal finance", "Osobní finance")}</span>
-            <span>{t("Life management", "Každodenní přehled")}</span>
-          </div>
-        </div>
-        <div className="personal-project-details">
-          <p className="personal-project-description">
-            {t(
-              "A personal app I’m building to manage my finances and other\n            parts of everyday life. Designed, built, and used by me.",
-              "LifeOS si stavím pro sebe. Pomáhá mi mít přehled o osobních financích a dalších věcech, které v běžném životě řeším. Od návrhu po vývoj je to moje práce.",
-            )}
-          </p>
-          <div className="personal-project-note">
-            <span className="collaboration-note-label">
-              {t("Built for an audience of one", "Pro vlastní potřebu")}
-            </span>
-            <p>
-              {t(
-                "My own tool for daily life, built for personal use.",
-                "Aplikaci rozvíjím podle toho, co sám při používání potřebuji.",
-              )}
-            </p>
-          </div>
-        </div>
-      </article>
+      <noscript><p>{t("LifeOS is my own personal finance and life management app, designed and built for my own daily use.", "LifeOS je moje vlastní aplikace pro osobní finance a každodenní přehled. Navrhuji a vyvíjím ji pro vlastní potřebu.")}</p></noscript>
     </section>
   );
 }
