@@ -79,6 +79,7 @@ function SecondaryLanguageSwitcher() {
 }
 
 function PostHogRoot({ children }: { children: ReactNode }) {
+  const [isLoaded, setIsLoaded] = useState(false);
   const apiKey = import.meta.env.VITE_PUBLIC_POSTHOG_PROJECT_TOKEN;
   const apiHost = import.meta.env.VITE_PUBLIC_POSTHOG_HOST;
 
@@ -104,10 +105,11 @@ function PostHogRoot({ children }: { children: ReactNode }) {
         cookieless_mode: "on_reject",
         defaults: "2025-05-24",
         debug: import.meta.env.DEV,
+        loaded: () => setIsLoaded(true),
       }}
     >
       {children}
-      <AnalyticsConsent />
+      {isLoaded && <AnalyticsConsent />}
     </PostHogProvider>
   );
 }
@@ -115,12 +117,11 @@ function PostHogRoot({ children }: { children: ReactNode }) {
 function AnalyticsConsent() {
   const { t } = useLocale();
   const posthog = usePostHog();
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    if (posthog.get_explicit_consent_status() !== "pending") {
-      setIsVisible(false);
-    }
+    // The provider mounts this component only after stored consent is loaded.
+    setIsVisible(posthog.get_explicit_consent_status() === "pending");
 
     const showPreferences = () => setIsVisible(true);
     window.addEventListener("show-analytics-preferences", showPreferences);
