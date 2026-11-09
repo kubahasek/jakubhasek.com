@@ -8,18 +8,18 @@ export function Projects() {
 
   return (
     <section className="work" id="work" aria-labelledby="work-title">
-      <h2 id="work-title" data-reveal>{t("Selected work", "Na čem pracuji")}</h2>
+      <h2 id="work-title">{t("Selected work", "Na čem pracuji")}</h2>
       <div className="work-layout">
         <div className="project-index" aria-label={t("Select a project", "Vyberte projekt")}>
-          <button type="button" className="project-select" aria-pressed={active === "akip"} aria-controls="project-detail" onClick={() => setActive("akip")} data-reveal>
+          <button type="button" className="project-select" aria-pressed={active === "akip"} aria-controls="project-detail" onClick={() => setActive("akip")}>
             <span>AKIP<br />Solutions</span>
             <span className="project-kind">{t("Full-stack development", "Full-stack vývoj")}</span>
           </button>
-          <button type="button" className="project-select" aria-pressed={active === "lifeos"} aria-controls="project-detail" onClick={() => setActive("lifeos")} data-reveal>
+          <button type="button" className="project-select" aria-pressed={active === "lifeos"} aria-controls="project-detail" onClick={() => setActive("lifeos")}>
             <span>LifeOS</span>
             <span className="project-kind">{t("My own application", "Vlastní aplikace")}</span>
           </button>
-          <p className="project-hint" data-reveal>{t("Choose a name to see what’s behind it.", "Vyberte název a zjistěte víc.")}</p>
+          <p className="project-hint">{t("Choose a name to see what’s behind it.", "Vyberte název a zjistěte víc.")}</p>
         </div>
         <div className="project-detail" id="project-detail" aria-live="polite" aria-atomic="true">
           {active === "akip" ? (

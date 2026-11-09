@@ -212,9 +212,3 @@ body:has(> .site-shell) > .consent-banner .consent-copy p { max-width: 74ch; mar
   body:has(> .site-shell) > .consent-banner { grid-template-columns: 1fr; gap: 16px; }
   .portfolio-hero { gap: 24px; }
 }
-@media (prefers-reduced-motion: no-preference) {
-  .reveal-in { animation: name-enter 700ms var(--ease-out) both; }
-  .capabilities .reveal-in { animation-name: item-enter; }
-  .project-select.reveal-in { animation-duration: 850ms; }
-}
-@keyframes item-enter { from { opacity: 0; transform: translateX(18px); } to { opacity: 1; transform: translateX(0); } }
