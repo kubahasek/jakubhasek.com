@@ -42,6 +42,7 @@ function HomePage() {
           <a href="#work">{t("Work", "Projekty")}</a>
           <a href="#about">{t("About", "O mně")}</a>
           <a href="#contact">{t("Contact", "Kontakt")}</a>
+          <a href="/cv">{t("CV", "Životopis")}</a>
         </nav>
         <div className="topbar-actions">
           <LanguageSwitcher />

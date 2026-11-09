@@ -70,7 +70,7 @@ function RootComponent() {
 function SecondaryLanguageSwitcher() {
   const pathname = useLocation({ select: (location) => location.pathname });
   // Home owns its header control; other routes share a compact fixed control.
-  if (pathname === "/") return null;
+  if (pathname === "/" || pathname === "/cv") return null;
   return (
     <div className="secondary-language-switcher">
       <LanguageSwitcher />
