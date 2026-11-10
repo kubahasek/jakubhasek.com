@@ -187,6 +187,11 @@
 .dark .cv-paper-surface {
   filter: drop-shadow(0 24px 18px #0005);
 }
+.cv-motion-hint {
+  text-align: center;
+  font-size: 12px;
+  margin: 16px 24px;
+}
 @media screen and (min-width: 800px) {
   .cv-paper {
     display: grid;
@@ -194,13 +199,18 @@
     column-gap: 36px;
   }
   .cv-heading,
-  .cv-profile,
+  .cv-full-width,
   .cv-bottom {
     grid-column: 1 / -1;
   }
   .cv-education {
     grid-column: 1;
-    grid-row: 4 / span 2;
+    grid-row: 5 / span 2;
+  }
+}
+@media (prefers-reduced-motion: reduce), (hover: none) {
+  .cv-motion-hint {
+    display: none;
   }
 }
 @media (max-width: 480px) {
@@ -240,6 +250,9 @@
   .cv-skills {
     gap: 12px;
   }
+  .cv-motion-hint {
+    display: none;
+  }
 }
 @media print {
   @page {
@@ -251,6 +264,7 @@
     padding: 0;
   }
   .cv-topbar,
+  .cv-motion-hint,
   .consent-banner,
   .secondary-language-switcher,
   .skip-link {
@@ -261,6 +275,7 @@
   }
   .cv-sheet {
     width: 100%;
+    transform: none !important;
   }
   .cv-paper {
     padding: 0;

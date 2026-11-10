@@ -31,6 +31,7 @@ export const cvContent = {
     "english": "English",
     "exam": "Cambridge Certificate in Advanced English (CAE) · Grade A · Score 201 · January 2023",
     "note": "CV prototype · Content for review",
+    "hint": "Move your cursor to tilt the paper",
     "print": "Print / Save PDF"
   },
   "cs": {
@@ -65,6 +66,7 @@ export const cvContent = {
     "english": "Angličtina",
     "exam": "Cambridge Certificate in Advanced English (CAE) · Hodnocení A · Skóre 201 · Leden 2023",
     "note": "Prototyp životopisu · Obsah ke kontrole",
+    "hint": "Pohybem kurzoru nakloníte papír",
     "print": "Tisk / Uložit PDF"
   }
 } as const;
